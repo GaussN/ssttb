@@ -1,0 +1,23 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <div><a href="{% url 'home_page' %}" style="text-decoration: underline;">Учебный материал</a> > <a href="{% url 'lessons_list_page' %}" style="text-decoration: underline;">Список занятий</a> > <b>{{ topic }}</b></div>
+
+    {% autoescape off %}
+    {{ content }}
+    {% endautoescape %}
+    <div>
+        <ul class="pager">
+            {% if prev_lesson %}
+            <li><a class="link" href="{{ prev_lesson.get_absolute_url }}">Previous</a></li>
+            {% endif %}
+
+            {% if next_lesson %}
+            <li><a class="link" href="{{ next_lesson.get_absolute_url }}">Next</a></li>
+            {% endif %}
+        </ul> 
+    </div>
+
+</div>
+{% endblock %}

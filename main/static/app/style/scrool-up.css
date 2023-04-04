@@ -1,0 +1,11 @@
+.scrollup {
+    background-color: aqua;
+    width: 40px;
+    height: 40px;
+    opacity: 0.3;
+    position: fixed;
+    bottom: 50px;
+    right: 100px;
+    text-indent: -9999px;
+    background: url('icon_top.png') no-repeat;
+}

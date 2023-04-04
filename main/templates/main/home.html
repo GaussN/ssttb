@@ -1,0 +1,48 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2><b>Физика твердых тел</b></h2>
+    <small>Учебное пособие</small>
+</div>
+<div class="text-center row">
+    <div class="col-md-4">
+        <a class="link" href="{% url 'lessons_list_page' %}">
+            <div class="panel">
+                <h4 class="panel-heading"><b>Уроки</b></h4>
+                <div class="panel-body">Lorem ipsum dolor sit amet.</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'tests_list_page' %}">
+            <div class="panel">
+                <h4 class="panel-heading"><b>Тесты</b></h4>
+                <div class="panel-body">Lorem ipsum dolor sit amet.</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'exercises_list_page' %}">
+            <div class="panel">
+                <h4 class="panel-heading"><b>Задания</b></h4>
+                <div class="panel-body">Lorem ipsum dolor sit amet.</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'exercises_list_page' %}">
+            <div class="panel">
+                <h4 class="panel-heading"><b>Прогресс</b></h4>
+                <div style="display: flex; justify-content: center;">
+                    <div class="progress" style="height: 10px; width: 90%;">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                            <span class="sr-only">50% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

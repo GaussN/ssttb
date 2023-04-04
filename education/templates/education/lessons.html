@@ -1,0 +1,19 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <div class="text-left"><a href="{% url 'home_page' %}" style="text-decoration: underline;">Учебный материал</a> > <b>Список занятий</b></div>
+    <h2><b>Список занятий</b></h2>
+    <small>Оглавление</small>
+</div>
+<div></div>
+<div class="list text-center">
+    {% for les in lessons %}
+    <a class="list-link-item link" href="{{ les.get_absolute_url }}">
+        <div class="panel">{{ forloop.counter }} Урок: {{ les.topic }}</div>
+    </a>
+    {% empty %}
+    <h3>Учебный материал отсутствует</h3>
+    {% endfor %}
+</div>
+{% endblock %}

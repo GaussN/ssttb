@@ -1,0 +1,84 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div><a href="{% url 'home_page' %}" style="text-decoration: underline;">Учебный материал</a> > <a href="{% url 'tests_list_page' %}" style="text-decoration: underline;">Список тестов</a> > <b>{{ topic }}</b></div>
+    <h1>{{ topic }}</h1>
+    <form>
+        <div>
+            {% for question in questions %}
+            <div class="form-check question">
+                <h2>{{ question.text }}</h2>
+                {% if question.multianswer %}
+                <span class="multi"></span>
+                    {% for answer in question.answers %}
+                    <div>
+                        {% if answer.right %}
+                        <input type="checkbox" class="form-check-input right-answer" id="{{ forloop.parentloop.counter }}{{ forloop.counter }}">
+                        {% else %} 
+                        <input type="checkbox" class="form-check-input" id="{{ forloop.parentloop.counter }}{{ forloop.counter }}">
+                        {% endif %}
+                        <label class="form-check-label" for="{{ forloop.parentloop.counter }}{{ forloop.counter }}">{{ answer.answer }}</label></br>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% for answer in question.answers %}
+                    <div>
+                        {% if answer.right %}
+                        <input name="{{ forloop.parentloop.counter }}" type="radio" class="form-check-input right-answer" id="{{ forloop.parentloop.counter }}{{ forloop.counter }}">
+                        {% else %}
+                        <input name="{{ forloop.parentloop.counter }}" type="radio" class="form-check-input" id="{{ forloop.parentloop.counter }}{{ forloop.counter }}">
+                        {% endif %}
+                        <label class="form-check-label" for="{{ forloop.parentloop.counter }}{{ forloop.counter }}">{{ answer.answer }}</label></br>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <input style="float: right" id="submit-button" class="btn btn-primary" type="button" value="Проверить"></input>
+    </form>
+</div>
+
+<script>
+    
+    document.querySelector('#submit-button').addEventListener('click', ()=>{ 
+        //изменение стилей вопросов:
+        let answers = document.querySelectorAll('.form-check-input');
+        for(let answer of answers){
+            let label = document.querySelector(`label[for="${answer.id}"]`);
+            label.parentNode.style = "";
+            if (answer.checked) {
+                if (answer.classList.contains('right-answer'))
+                    label.parentNode.className = "bg-success";
+                    else 
+                    label.parentNode.className = "bg-danger";
+            }
+            else if (answer.classList.contains('right-answer')) {
+                label.parentNode.className = "bg-success";
+                label.parentNode.style = "height: 100%; background: repeating-linear-gradient(-60deg, #dff0d8 0, #dff0d8 3px, transparent 1px, transparent 8px);";
+            } 
+            //else {
+            //    label.parentNode.className = "bg-success";
+            //    label.parentNode.style = "height: 100%; background: repeating-linear-gradient(-60deg, #f2dede 0, #f2dede 3px, transparent 1px, transparent 8px);";
+            //}
+        }
+        
+        let questions = document.querySelectorAll(".question");
+        let qcount = questions.length;
+        let rqcount = 0;
+        for (let question of questions){
+            if (question.querySelector(".multi")) {
+
+            }
+            else {
+                if (question.querySelector(".right-answer").checked) rqcount++; // console.log(question.querySelector(".right-answer"))
+            }
+        }
+        console.log(rqcount);
+
+     })
+
+</script>
+{% endblock %}

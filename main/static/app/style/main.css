@@ -1,0 +1,43 @@
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+body{
+    background-color: #D2D7DF;
+}
+
+.panel:hover {
+    background-color: #353535;
+    color: #D2D7DF; 
+}
+
+a,
+a:hover,
+a:focus {
+    text-decoration: none;
+    color: rgb(60, 60, 60);
+}
+
+
+.panel {
+    padding-bottom: 25px;
+    background-color: rgb(230, 230, 230);
+}
+
+.grid-item>a>div{
+    height: 150px;
+}
+
+.panel,
+.panel:hover {
+    transition-duration: 0.25s;
+}
+
+a.null-link:hover>div{
+    color: #ff000090;
+}
+
+.list-link-item>.panel {
+    padding: 15px;
+    font-size: 15pt;
+}
