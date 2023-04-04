@@ -1,3 +1,4 @@
+from django.views.generic import ListView, DetailView, TemplateView
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -5,53 +6,81 @@ from django.shortcuts import render
 from .models import *
 
 
-def lessons_list(request: HttpRequest):
-    lessons = Lesson.objects.filter(visible=True).order_by('num')
-    return render(request, 'education/lessons.html', { 'active_page': 'lessons', 'lessons': lessons})
+class LessonsList(ListView):
+    model = Lesson
+    queryset = Lesson.objects.filter(visible=True)
+    template_name = 'education/lessons.html'
+    context_object_name = 'lessons'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'lessons'
+        return context
 
 
-def tests_list(request: HttpRequest):
-    tests = Test.objects.filter(visible=True)
-    return render(request, 'education/tests.html', { 'active_page': 'lessons', 'tests': tests})
+class TestsList(ListView):
+    model = Test
+    queryset = Test.objects.filter(visible=True)
+    template_name = 'education/tests.html'
+    context_object_name = 'tests'
 
-
-def exercises_list(request: HttpRequest):
-    return render(request, 'education/exercises.html', { 'active_page': 'lessons'})
-
-
-def lesson(request: HttpRequest, id: int):
-    lesson = get_object_or_404(Lesson, num=id)
-    topic = lesson.topic
-    content = lesson.page
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'lessons'
+        return context
     
-    next_lesson = None
-    prev_lesson = None
-    try: next_lesson = Lesson.objects.filter(num__gt=id, visible=True).first()
-    except:  pass
-    try: prev_lesson = Lesson.objects.filter(num__lt=id, visible=True).last()
-    except: pass
 
-    return render(request, 'education/lesson_base.html', { 
-        'active_page': 'lessons', 
-        'content': content, 
-        'topic': topic, 
-        'next_lesson': next_lesson,
-        'prev_lesson': prev_lesson,
-    })
+class ExercisesList(ListView):
+    model = Exercise
+    queryset = Exercise.objects.filter(visible=True)
+    template_name = 'education/exercises.html'
+    context_object_name = 'exercises'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'lessons'
+        return context
 
 
-def test(request: HttpRequest, id: int):
-    test = get_object_or_404(Test, pk=id)
-    topic = test.topic
-    test_json = test.test_json
+class LessonView(TemplateView):
+    template_name = 'education/lesson_base.html'
 
-    from random import shuffle
-    shuffle(test_json)
-    for answers in test_json:
-        shuffle(answers.get('answers'))
+    def get_context_data(self, id: int, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lesson = get_object_or_404(Lesson, num=id)
+        next_lesson = None
+        prev_lesson = None
+        try: next_lesson = Lesson.objects.filter(num__gt=id, visible=True).first()
+        except:  pass
+        try: prev_lesson = Lesson.objects.filter(num__lt=id, visible=True).last()
+        except: pass
+        
+        context.update({
+            'active_page': 'lessons', 
+            'lesson': lesson,
+            'next_lesson': next_lesson,
+            'prev_lesson': prev_lesson,
+        })
+        return context
 
-    return render(request, 'education/test_base.html', { 
-        'active_page': 'lessons', 
-        'questions': test_json, 
-        'topic': topic, 
-    })
+
+class TestView(TemplateView):
+    template_name = 'education/test_base.html'
+
+    def get_context_data(self, id: int, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        test = get_object_or_404(Test, pk=id)
+        test_json = test.test_json
+        from random import shuffle
+        shuffle(test_json)
+        for answers in test_json:
+            shuffle(answers.get('answers'))
+
+
+        context.update({ 
+            'active_page': 'lessons', 
+            'test': test,
+            'questions': test_json, 
+        })
+        return context

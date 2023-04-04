@@ -4,9 +4,9 @@ import education.views as views
 
 
 urlpatterns = [ 
-    path('lessons/', views.lessons_list, name='lessons_list_page'),
-    path('lesson/<int:id>', views.lesson, name='lesson_page'),
-    path('tests/', views.tests_list, name='tests_list_page'),
-    path('test/<int:id>', views.test, name='test_page'),
-    path('exercises/', views.exercises_list, name='exercises_list_page'),
+    path('lessons/', views.LessonsList.as_view(), name='lessons_list_page'),
+    path('lesson/<int:id>', views.LessonView.as_view(), name='lesson_page'),
+    path('tests/', views.TestsList.as_view(), name='tests_list_page'),
+    path('test/<int:id>', views.TestView.as_view(), name='test_page'),
+    path('exercises/', views.ExercisesList.as_view(), name='exercises_list_page'),
 ]

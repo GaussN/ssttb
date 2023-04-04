@@ -1,3 +1,4 @@
+from django.views.generic import TemplateView, ListView
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -5,13 +6,28 @@ from django.shortcuts import render
 from .models import *
 
 
-def home(request: HttpRequest):
-    return render(request, 'main/home.html', { 'active_page': 'home' })
+class HomeView(TemplateView):
+    template_name = 'main/home.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'home'
+        return context
 
 
-def literature_list(request: HttpRequest):
-    return render(request, 'main/literature.html', { 'active_page': 'literature', 'books': Book.objects.all()})
+class LiteratureListView(ListView):
+    model = Book
+    template_name = 'main/literature.html'
+    context_object_name = 'books'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'literature'
+        return context
 
 
-def about(request: HttpRequest):
-    return render(request, 'main/about.html', { 'active_page': 'about' })
+class AboutView(TemplateView):
+    template_name = 'main/about.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'about'
+        return context

@@ -8,7 +8,7 @@ class Lesson(models.Model):
     visible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return f'/lesson/{self.num}'
+        return f'/edu/lesson/{self.pk}'
     
     class Meta:
         verbose_name = 'Темы учебного материала'
@@ -21,8 +21,19 @@ class Test(models.Model):
     visible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return f'/test/{self.pk}'
+        return f'/edu/test/{self.pk}'
+         
 
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
+
+
+class Exercise(models.Model):
+    exercise = models.TextField()
+    answer = models.TextField()
+    visible = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Задание'
+        verbose_name_plural = 'Задания'

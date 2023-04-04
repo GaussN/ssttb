@@ -10,7 +10,7 @@
 <div class="list text-center">
     {% for les in lessons %}
     <a class="list-link-item link" href="{{ les.get_absolute_url }}">
-        <div class="panel">{{ forloop.counter }} Урок: {{ les.topic }}</div>
+        <div class="panel spanel">{{ forloop.counter }} Урок: {{ les.topic }}</div>
     </a>
     {% empty %}
     <h3>Учебный материал отсутствует</h3>

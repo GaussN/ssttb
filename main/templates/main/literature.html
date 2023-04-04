@@ -11,7 +11,7 @@
     {% for book in books %}
     <div class="col-md-4 grid-item">
         <a class="link {% if book.link is None %}null-link{% endif %}" href="{% if book.link is not None %}{{ book.link }}{% else %}#{% endif %}">
-            <div class="panel">
+            <div class="panel spanel">
                 <h4 class="panel-heading" style="white-space: wrap;"><b>{{ book.title }}</b></h4>
                 <div class="panel-body">{{ book.author }}</div>
             </div>

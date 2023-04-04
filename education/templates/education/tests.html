@@ -10,7 +10,7 @@
 <div class="list text-center">
     {% for test in tests %}
     <a class="list-link-item link" href="{{ test.get_absolute_url }}">
-        <div class="panel">{{ forloop.counter }} Тест: {{ test.topic }}</div>
+        <div class="panel spanel">{{ forloop.counter }} Тест: {{ test.topic }}</div>
     </a>
     {% empty %}
     <h3>Тесты отсутствуют</h3>

@@ -6,7 +6,7 @@ body{
     background-color: #D2D7DF;
 }
 
-.panel:hover {
+.spanel:hover {
     background-color: #353535;
     color: #D2D7DF; 
 }
@@ -24,14 +24,15 @@ a:focus {
     background-color: rgb(230, 230, 230);
 }
 
-.grid-item>a>div{
-    height: 150px;
-}
-
 .panel,
 .panel:hover {
     transition-duration: 0.25s;
 }
+
+.grid-item>a>div{
+    height: 150px;
+}
+
 
 a.null-link:hover>div{
     color: #ff000090;

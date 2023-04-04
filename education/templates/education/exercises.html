@@ -4,57 +4,39 @@
 <div class="jumbotron text-center">
     <div class="text-left"><a href="{% url 'home_page' %}" style="text-decoration: underline;">Учебный материал</a> > <b>Задания</b></div>
     <h2><b>Задания</b></h2>
-    <small>Оглавление</small>
+    <small></small>
 </div>
 
-<div class="list text-center">
-    {% comment %}  {% endcomment %}
-    <div id="accordion panel">
-        <div class="card">
-          <div class="card-header" id="headingOne">
-            <h5 class="mb-0">
-              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Разворачиваемая панель #1
-              </button>
-            </h5>
-          </div>
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="card-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <hr>
-        <div class="card">
-          <div class="card-header" id="headingTwo">
-            <h5 class="mb-0">
-              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Разворачиваемая панель #2
-              </button>
-            </h5>
-          </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-            <div class="card-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
-        </div>
-        <hr>
-        <div class="card">
-          <div class="card-header" id="headingThree">
-            <h5 class="mb-0">
-              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                Разворачиваемая панель #3
-              </button>
-            </h5>
-          </div>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-            <div class="card-body">
-              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-          </div>
+{% for exercise in exercises %}
+  <div class="jumbotron text-center">
+    {% autoescape off %}
+      <div class="exercise-block">
+        {{ exercise.exercise }}</br>
+      </div>
+      
+      <div class="asnwer-block">
+        <button class="btn btn-success show-answer">Смотреть ответ</button></br>
+      
+        <div class="answer" style="display: none;">
+          <p>{{ exercise.answer }}</p>
         </div>
       </div>
-    {% comment %}  {% endcomment %}
-</div>
+
+    {% endautoescape %}
+  </div>
+  {% empty %}
+  Nic nie ma
+{% endfor %}
+<script>
+    let answer_blocks = document.querySelectorAll(".asnwer-block");
+    for (let answer_block of answer_blocks){
+      answer_block.querySelector('button').addEventListener('click', (event) => {
+      let answer = answer_block.querySelector('div');
+      if(answer.style.display === "none") 
+        answer.style.display = "block";
+      else
+        answer.style.display = "none";
+    });
+    }
+</script>
 {% endblock %}

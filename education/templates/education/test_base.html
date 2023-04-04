@@ -3,8 +3,8 @@
 {% block content %}
 
 <div class="jumbotron">
-    <div><a href="{% url 'home_page' %}" style="text-decoration: underline;">Учебный материал</a> > <a href="{% url 'tests_list_page' %}" style="text-decoration: underline;">Список тестов</a> > <b>{{ topic }}</b></div>
-    <h1>{{ topic }}</h1>
+    <div><a href="{% url 'home_page' %}" style="text-decoration: underline;">Учебный материал</a> > <a href="{% url 'tests_list_page' %}" style="text-decoration: underline;">Список тестов</a> > <b>{{ test.topic }}</b></div>
+    <h1>{{ test.topic }}</h1>
     <form>
         <div>
             {% for question in questions %}
