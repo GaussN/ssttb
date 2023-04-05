@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy, reverse
 from django.db import models
 
 
@@ -8,8 +9,8 @@ class Lesson(models.Model):
     visible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return f'/edu/lesson/{self.pk}'
-    
+        return reverse_lazy("lesson_page", args=[self.pk])
+
     class Meta:
         verbose_name = 'Темы учебного материала'
         verbose_name_plural = 'Темы учебного материала'
@@ -21,8 +22,7 @@ class Test(models.Model):
     visible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return f'/edu/test/{self.pk}'
-         
+        return reverse_lazy("test_page", args=[self.pk])
 
     class Meta:
         verbose_name = 'Тест'

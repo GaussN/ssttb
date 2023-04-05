@@ -50,7 +50,8 @@
                     <li {% if active_page == 'about' %} class="active" {% endif %}><a href="{% url 'about_page' %}">О проекте</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class=><a href="#"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
+                    <li {% if active_page == 'autorization' %} class="active" {% endif %}><a href="{% url 'auth_page' %}"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
+                    <li {% if active_page == 'register' %} class="active" {% endif %} ><a href="{% url 'reg_page' %}"><span class="glyphicon glyphicon-user"></span> Log up</a></li>
                 </ul>
             </div>
         </div>
