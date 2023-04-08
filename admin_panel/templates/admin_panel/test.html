@@ -1,0 +1,54 @@
+{% extends 'admin_panel/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'admin_panel/style/main.css' %}">
+{% endblock %}
+
+
+{% block content %}
+	<div class="container container-sm">
+		<form action="" method="post">
+
+			<label>Test titel:</label>
+			<input type="text" class="form-control" name="test_title" value="{{ test.topic }}">
+			<label>Visible:</label>
+			<input type="checkbox" class="form-checkbox" name="test_visible" {% if test.visible %}checked{% endif %}>
+			<hr/>
+			<div class="questions">
+				{% for question in test.test_json %}
+                <div class="panel question">
+					<div class="form-group">
+						<label>Question:</label>
+						<input type="text" class="form-control" name="question_text" value="{{ question.text }}">
+						<label>Multianswer:</label>
+						<input type="checkbox" class="form-checkbox" name="is_multianswer" {% if question.multiasnwer %}checked{% endif %}>
+					</div>
+
+					<div class="answers">
+						{% for answer in question.answers %}
+                        <div class="answer form-group form-inline" >
+							<label class="control-label">Answer:</label>
+							<input type="text" class="form-control" name="answer_text" value="{{ answer.answer }}">
+							<label>Right:</label>
+							<input type="checkbox" class="form-checkbox" name="is_right" {% if answer.right %}checked{% endif %}>
+							<button type="button" class="btn btn-danger remove-answer"><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+                        {% endfor %}
+					</div>
+					<button type="button" class="btn btn-danger del-question">Del question</button>
+					<button type="button" class="btn btn-success add-answer" >Add answer</button><br>
+				</div>
+                {% endfor %}
+			</div>
+
+			<button type="button" class="btn btn-success add-question">Add question</button>
+			<button type="submit" class="btn btn-success submit">Save test</button>
+		</form>
+	</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'admin_panel/scripts/test.js' %}"></script>
+{% endblock %}

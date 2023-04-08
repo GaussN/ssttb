@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="form-block">
+    <div class="form-content">
+        <form method="post" >
+        {% csrf_token %}
+        {% for f in form %}
+        <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+        {{ f }}
+        <span>{{ f.errors }}</span>
+        {% endfor %}
+        <button class="btn btn-success" type="submit">Register</button>
+    </form>
+    </div>
+</div>
+{% endblock %}

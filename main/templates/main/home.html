@@ -30,6 +30,7 @@
             </div>
         </a>
     </div>
+    {% if request.user.is_authenticated and not request.user.is_superuser %}
     <div class="col-md-4">
         <a href="{% url 'exercises_list_page' %}">
             <div class="panel spanel">
@@ -44,5 +45,6 @@
             </div>
         </a>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
