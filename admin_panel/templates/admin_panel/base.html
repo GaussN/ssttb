@@ -2,18 +2,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>AdminPanel</title>
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    {% block style %}{% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AdminPanel</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'admin_panel/style/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_panel/style/main.css' %}">
+    {% block style %}{% endblock style %}
 </head>
 <body>
 
-{% block content %}{% endblock %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'home_page' %}">SSBT</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-left">
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if request.user.is_authenticated %}
+                    <li><a><span class="glyphicon glyphicon-user"></span> {{ request.user.username }}</a></li>
+                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'auth_page' %}"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
+                    <li><a href="{% url 'reg_page' %}"><span class="glyphicon glyphicon-user"></span> Log up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container container-sm">
+{% block content %}{% endblock content%}
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    {% block scripts %}{% endblock %}
+    {% block scripts %}{% endblock scripts %}
 </body>
 </html>

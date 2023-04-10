@@ -1,0 +1,20 @@
+.navbar,
+.navbar-header>.navbar-brand {
+    background-color: #353535;
+    color: #D2D7DF;
+    border: none;
+    border-radius: 0;
+}
+
+.nav>li:hover {
+    background-color: #D2D7DF;
+}
+
+.nav>li,
+.nav>li:hover {
+    transition-duration: 0.25s;
+}
+
+.navbar-default .navbar-nav>.active>a{
+    background-color: #D2D7DF;
+}

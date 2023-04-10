@@ -1,0 +1,32 @@
+{% extends 'admin_panel/base.html' %}
+{% load tags %}
+
+{% block content %}
+<div class="jumbotron">
+<div>
+    <a href="{% url 'admin_home' %}" style="text-decoration: underline;">Admin</a> > <b>{% get_model_name model %}</b>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        {% get_fields model as fields %}
+        {% for field in fields %}
+        <th>{% get_verbose_name field %}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for obj in queryset %}
+    <tr onclick="window.location.href='{{ obj.id }}'; return false">
+        {% for field in fields %}
+        {% get_name field as filed_name %}
+        {% get_attr obj filed_name as attr%}
+        <td>{{ attr|truncatewords:50|slice:":30" }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock content %}

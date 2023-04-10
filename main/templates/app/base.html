@@ -51,7 +51,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if request.user.is_authenticated %}
-                    <li><a><span class="glyphicon glyphicon-user"></span> {{ request.user.username }}</a></li>
+                    <li><a {% if request.user.is_superuser %} href="{% url 'admin_home' %}" {% endif %}><span class="glyphicon glyphicon-user"></span> {{ request.user.username }}</a></li>
                     <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> logout</a></li>
                     {% else %}
                     <li {% if active_page == 'login' %} class="active" {% endif %}><a href="{% url 'auth_page' %}"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>

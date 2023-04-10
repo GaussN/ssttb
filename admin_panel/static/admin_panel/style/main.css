@@ -18,3 +18,25 @@ button{
 .remove-answer, .submit{
     float: right;
 }
+
+a,
+a:hover{
+    color: rgb(60, 60, 60);
+    text-decoration: none;
+}
+
+.spanel:hover {
+    background-color: #353535;
+    color: #D2D7DF;
+}
+
+.panel {
+    padding-bottom: 25px;
+    background-color: rgb(230, 230, 230);
+}
+
+.panel,
+.panel:hover {
+    transition-duration: 0.25s;
+}
+

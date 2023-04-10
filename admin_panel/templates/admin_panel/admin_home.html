@@ -1,0 +1,17 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block content %}
+
+<div class="list text-center">
+
+    {% for table in tables %}
+    <a class="list-link-item link" href="{{ table.table_url }}">
+        <div class="panel spanel">{{ table.table_name }}</div>
+    </a>
+    {% endfor %}
+
+</div>
+
+
+{% endblock content %}
+
