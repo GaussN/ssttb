@@ -9,7 +9,7 @@ class Lesson(models.Model):
     visible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
-        return reverse_lazy("lesson_page", args=[self.pk])
+        return reverse_lazy("lesson_page", args=[self.num])
 
     class Meta:
         verbose_name = 'Темы учебного материала'
