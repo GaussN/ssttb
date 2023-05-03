@@ -43,6 +43,10 @@ a.null-link:hover>div{
     font-size: 15pt;
 }
 
+p{
+    text-indent: 1.5em;
+}
+
 @media only screen and (min-width: 768px) {
     .form-block{
         display: flex;
