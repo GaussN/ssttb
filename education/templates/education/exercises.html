@@ -10,14 +10,15 @@
 {% for exercise in exercises %}
   <div class="jumbotron text-center">
     {% autoescape off %}
-      <div class="exercise-block">
-        {{ exercise.exercise }}</br>
+      <div class="exercise-block text-justify">
+        <p>{{ exercise.exercise }}</p>
+        <br>
       </div>
-      
-      <div class="asnwer-block">
+
+      <div class="answer-block">
         <button class="btn btn-success show-answer">Смотреть ответ</button></br>
-      
-        <div class="answer" style="display: none;">
+
+        <div class="answer1 text-justify" style="display: none;">
           <p>{{ exercise.answer }}</p>
         </div>
       </div>
@@ -28,7 +29,7 @@
   Nic nie ma
 {% endfor %}
 <script>
-    let answer_blocks = document.querySelectorAll(".asnwer-block");
+    let answer_blocks = document.querySelectorAll(".answer-block");
     for (let answer_block of answer_blocks){
       answer_block.querySelector('button').addEventListener('click', (event) => {
       let answer = answer_block.querySelector('div');
