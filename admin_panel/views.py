@@ -1,9 +1,12 @@
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpRequest
-from django.shortcuts import render
-from django.urls import reverse_lazy
+import json
 
-from education.models import Test
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render, redirect
+from django.http import HttpRequest
+from django.urls import reverse_lazy
+from django.db import utils
+
+from education.models import *
 
 
 admin_tables = [
@@ -40,5 +43,24 @@ def records_list(request: HttpRequest, **kwargs):
 
 @login_required
 @user_passes_test(lambda user: user.is_superuser)
-def test_view(request: HttpRequest, id):
+def test_update(request: HttpRequest, id: int):
     return render(request, 'admin_panel/test.html', {'test': Test.objects.get(pk=id)})
+
+
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
+def test_add(request: HttpRequest):
+    if request.method == 'POST':
+        post = json.loads(request.body)
+        try:
+            test = Test(
+                topic=post.get('title'),
+                test_json=post.get('questions'),
+                visible=post.get('visible')
+            )
+            test.save()
+        except utils.Error as er:
+            print(f"{er=}")
+        # возврат json с сообщением: "успех"/"не успех"
+        return redirect(reverse_lazy('tests'))
+    return render(request, 'admin_panel/test.html')

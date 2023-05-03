@@ -9,7 +9,7 @@
 {% block content %}
 	<div class="container container-sm">
 		<form action="" method="post">
-
+			{% csrf_token %}
 			<label>Test titel:</label>
 			<input type="text" class="form-control" name="test_title" value="{{ test.topic }}">
 			<label>Visible:</label>
