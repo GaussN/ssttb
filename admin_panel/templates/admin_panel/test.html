@@ -29,7 +29,7 @@
 						{% for answer in question.answers %}
                         <div class="answer form-group form-inline" >
 							<label class="control-label">Answer:</label>
-							<input type="text" class="form-control" name="answer_text" value="{{ answer.answer }}">
+							<input style="width: 100%;" type="text" class="form-control" name="answer_text" value="{{ answer.answer }}">
 							<label>Right:</label>
 							<input type="checkbox" class="form-checkbox" name="is_right" {% if answer.right %}checked{% endif %}>
 							<button type="button" class="btn btn-danger remove-answer"><span class="glyphicon glyphicon-trash"></span></button>

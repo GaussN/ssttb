@@ -12,3 +12,7 @@ class Media(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy("media_page", args=[self.pk])
+
+    class Meta:
+        verbose_name = "Медиа"
+        verbose_name_plural = 'Медиа'

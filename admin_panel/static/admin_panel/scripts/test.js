@@ -1,7 +1,7 @@
 $('document').ready(() => {
-	let answer_template = '<div class="answer form-group form-inline" >'+
+	let answer_template = '<div class="answer form-group form-inline" style="display: flex; flex-direction: row; justify-content: space-between">'+
 		'<label class="control-label">Answer:</label>'+
-		'<input type="text" class="form-control" name="answer_text">'+
+		'<input style="width: 100%" type="text" class="form-control" name="answer_text">'+
 		'<label>Right:</label>'+
 		'<input type="checkbox" class="form-checkbox" name="is_right">'+
 		'<button type="button" class="btn btn-danger remove-answer"><span class="glyphicon glyphicon-trash"></span></button>'+

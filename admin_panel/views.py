@@ -19,10 +19,6 @@ admin_tables = [
         'table_url': reverse_lazy('lessons'),
     },
     {
-        'table_name': 'Exercises',
-        'table_url': reverse_lazy('exercises'),
-    },
-    {
         'table_name': 'User',
         'table_url': reverse_lazy('users'),
     },

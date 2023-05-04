@@ -55,6 +55,13 @@ p{
     margin-bottom: 10pt;
 }
 
+.form-content{
+    width: 275pt;
+}
+.form-error-message{
+    color: #FF6060;
+}
+
 @media only screen and (min-width: 768px) {
     .form-block{
         display: flex;

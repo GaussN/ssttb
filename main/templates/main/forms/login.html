@@ -3,13 +3,19 @@
 {% block content %}
 <div class="form-block">
     <div class="form-content">
-         <div>{{ form.non_field_errors }}</div>
+         <div>
+             {% for ner in form.non_field_errors %}
+                <span class="form-error-message">{{ ner }}</span>
+             {% endfor %}
+         </div>
         <form method="post" >
         {% csrf_token %}
         {% for f in form %}
-        <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+        <label for="{{ f.id_for_label }}">{{ f.label }} *</label>
         {{ f }}
-        <span>{{ f.errors }}</span>
+        {% endfor %}
+        {% for er in f.errors %}
+            <span class="form-error-message">{{ f.errors }}</span>
         {% endfor %}
         <button class="btn btn-success" type="submit">Login</button>
     </form>

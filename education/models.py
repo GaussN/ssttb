@@ -1,3 +1,6 @@
+import datetime
+
+from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.db import models
 
@@ -27,3 +30,18 @@ class Test(models.Model):
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
+
+
+class Progress(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    test_id = models.ForeignKey(Test, on_delete=models.CASCADE)
+    date = models.DateTimeField(default=datetime.datetime.now(), auto_created=True, editable=False)
+    score = models.IntegerField()
+    user_answers = models.JSONField()
+    test_json = models.JSONField()
+
+    # def get_absolute_utl(self, id:int):
+
+    class Meta:
+        verbose_name = 'Прогресс'
+        verbose_name_plural = 'Прогресс'

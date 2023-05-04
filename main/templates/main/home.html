@@ -33,7 +33,7 @@
     </div>
     {% if request.user.is_authenticated and not request.user.is_superuser %}
     <div class="col-md-4">
-        <a href="{% url 'exercises_list_page' %}">
+        <a href="{% url 'all_media_page' %}">
             <div class="panel spanel">
                 <h4 class="panel-heading"><b>Прогресс</b></h4>
                 <div style="display: flex; justify-content: center;">

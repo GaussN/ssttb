@@ -6,10 +6,29 @@
     <p>видео и презентации</p>
 </div>
 
+{% include 'app/search-line.html' %}
 
-<div class="text-center row">
+<div class="">
     {% for media in all_media %}
-    <div class="col-md-4 grid-item">
+        <a>
+            <div class="panel spanel" style="display: flex; flex-direction: row; padding: 10pt;">
+                <div>
+                    <iframe width="400px" height="300px" src="{{ media.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>{{ media.header }}</h3>
+                    <p>{{ media.describe }}</p>
+                </div>
+            </div>
+        </a>
+    {% empty %}
+    <h3>Mедиа отсутствует</h3>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{# comment #}
+<div class="col-md-4 grid-item">
         <a href="{{ media.url }}">
             <div class="panel spanel">
                 <h4 class="panel-heading" style="white-space: wrap;"><b>{{ media.header }}</b></h4>
@@ -17,8 +36,4 @@
             </div>
         </a>
     </div>
-    {% empty %}
-    <h3>Mедиа отсутствует</h3>
-    {% endfor %}
-</div>
-{% endblock %}
+{# comment #}
