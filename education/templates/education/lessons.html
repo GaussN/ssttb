@@ -7,7 +7,7 @@
     <small>Оглавление</small>
 </div>
 <div></div>
-<div class="list text-center">
+<div class="list">
     {% for les in lessons %}
     <a class="list-link-item link" href="{{ les.get_absolute_url }}">
         <div class="panel spanel">{{ forloop.counter }} Урок: {{ les.topic }}</div>

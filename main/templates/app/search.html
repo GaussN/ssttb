@@ -1,0 +1,49 @@
+{% extends 'app/base.html' %}
+
+{% block style %}
+<style>
+
+</style>
+{% endblock %}
+{% block content %}
+    {% include 'app/search-line.html' %}
+<div class="result_header">
+    {% if request.GET.q %}
+        <h1>Результаты поиска по запросу "{{ request.GET.q }}"</h1>
+    {% else %}
+        <h1>Нельзя найти что-то по пустому запросу</h1>
+    {% endif %}
+</div>
+<div class="result_content">
+    <div>
+        {% if search_result.lessons %}
+            <h2>Учебный материал</h2>
+            {% for l in  search_result.lessons %}
+                <a class="list-link-item link" href="{{ l.get_absolute_url }}">
+                    <div class="panel spanel">{{ l.topic }}</div>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        {% if search_result.tests %}
+            <h2>Тесты</h2>
+            {% for t in  search_result.tests %}
+                <a class="list-link-item link" href="{{ t.get_absolute_url }}">
+                    <div class="panel spanel">{{ t.topic }}</div>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        {% if search_result.media %}
+            <h2>Медиа</h2>
+            {% for m in  search_result.media %}
+                <a class="list-link-item link" href="{{ m.get_absolute_url }}">
+                    <div class="panel spanel">{{ m.header }}</div>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

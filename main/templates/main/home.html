@@ -3,13 +3,14 @@
 {% block content %}
 <div class="jumbotron text-center">
     <h2><b>Физика твердых тел</b></h2>
-    <small>Учебное пособие</small>
+    <p>Учебное пособие</p>
 </div>
+{% include 'app/search-line.html' %}
 <div class="text-center row">
     <div class="col-md-4">
         <a class="link" href="{% url 'lessons_list_page' %}">
             <div class="panel spanel">
-                <h4 class="panel-heading"><b>Уроки</b></h4>
+                <h4 class="panel-heading"><b>Учебный материал</b></h4>
                 <div class="panel-body">Lorem ipsum dolor sit amet.</div>
             </div>
         </a>
@@ -23,9 +24,9 @@
         </a>
     </div>
     <div class="col-md-4">
-        <a href="{% url 'exercises_list_page' %}">
+        <a href="{% url 'all_media_page' %}">
             <div class="panel spanel">
-                <h4 class="panel-heading"><b>Задания</b></h4>
+                <h4 class="panel-heading"><b>Медиа ресурсы</b></h4>
                 <div class="panel-body">Lorem ipsum dolor sit amet.</div>
             </div>
         </a>

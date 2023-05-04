@@ -27,13 +27,3 @@ class Test(models.Model):
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
-
-
-class Exercise(models.Model):
-    exercise = models.TextField()
-    answer = models.TextField()
-    visible = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = 'Задание'
-        verbose_name_plural = 'Задания'

@@ -38,13 +38,5 @@ class TestAdmin(admin.ModelAdmin):
     ordering = ('pk', 'topic', )
 
 
-class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'exercise', 'visible')
-    list_filter = ('visible', )
-    search_fields = ('pk', 'topic',)
-    ordering = ('pk',)
-
-
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Test, TestAdmin)
-admin.site.register(Exercise, ExerciseAdmin)

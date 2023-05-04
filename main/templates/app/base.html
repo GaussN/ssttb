@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'app/style/navbarstyle.css' %}"> 
     <link rel="stylesheet" href="{% static 'app/style/main.css' %}">
+    <link rel="stylesheet" href="{% static 'app/style/search.css' %}">
     {% block style %}
     
     {% endblock style %} 
@@ -31,46 +32,37 @@
 
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-left">
-                    <li {% if active_page == 'home' %} class="active" {% endif %} ><a href="{% url 'home_page' %}">Начальная страница</a></li>
-                    <li class="dropdown {% if active_page == 'lessons' %} active{% endif %}" >
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Учебный материал<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="{% url 'lessons_list_page' %}">Уроки</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'exercises_list_page' %}">Задания</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'tests_list_page' %}">Тесты</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li {% if active_page == 'literature' %} class="active" {% endif %}><a href="{% url 'literature_list_page' %}">Список литературы</a></li>
-                    <li {% if active_page == 'about' %} class="active" {% endif %}><a href="{% url 'about_page' %}">О проекте</a></li>
+                    <li class="home"><a href="{% url 'home_page' %}">Начальная страница</a></li>
+                    <li class="lessons"><a href="{% url 'lessons_list_page' %}">Уроки</a></li>
+                    <li class="tests"><a href="{% url 'tests_list_page' %}">Тесты</a></li>
+                    <li class="p_media"><a href="{% url 'all_media_page' %}">Медиа</a></li>
+                    <li class="about"><a href="{% url 'about_page' %}">О проекте</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if request.user.is_authenticated %}
-                    <li><a {% if request.user.is_superuser %} href="{% url 'admin_home' %}" {% endif %}><span class="glyphicon glyphicon-user"></span> {{ request.user.username }}</a></li>
-                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> logout</a></li>
+                    <li class="user_panel"><a {% if request.user.is_superuser %} href="{% url 'admin_home' %}" {% endif %}><span class="glyphicon glyphicon-user"></span> Привет {{ request.user.username }}!</a></li>
+                    <li  class="logout"><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                     {% else %}
-                    <li {% if active_page == 'login' %} class="active" {% endif %}><a href="{% url 'auth_page' %}"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
-                    <li {% if active_page == 'register' %} class="active" {% endif %} ><a href="{% url 'reg_page' %}"><span class="glyphicon glyphicon-user"></span> Log up</a></li>
+                    <li class="login"><a href="{% url 'auth_page' %}"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
+                    <li class="logup"><a href="{% url 'reg_page' %}"><span class="glyphicon glyphicon-user"></span> Регистрация</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
-
     
     <div class="container container-sm">
-{% block content %}
-{% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js " integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q " crossorigin="anonymous "></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js " integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl " crossorigin="anonymous "></script>
+    <script>
+        $("document").ready(()=>{
+            $(".{{ active_page }}").addClass("active");
+        });
+    </script>
 </body>
 
 </html>

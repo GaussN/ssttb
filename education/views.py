@@ -26,19 +26,7 @@ class TestsList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['active_page'] = 'lessons'
-        return context
-    
-
-class ExercisesList(ListView):
-    model = Exercise
-    queryset = Exercise.objects.filter(visible=True)
-    template_name = 'education/exercises.html'
-    context_object_name = 'exercises'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['active_page'] = 'lessons'
+        context['active_page'] = 'tests'
         return context
 
 
@@ -50,13 +38,17 @@ class LessonView(TemplateView):
         lesson = get_object_or_404(Lesson, num=id)
         next_lesson = None
         prev_lesson = None
-        try: next_lesson = Lesson.objects.filter(num__gt=id, visible=True).first()
-        except:  pass
-        try: prev_lesson = Lesson.objects.filter(num__lt=id, visible=True).last()
-        except: pass
-        
+        try:
+            next_lesson = Lesson.objects.filter(num__gt=id, visible=True).first()
+        except:
+            pass
+        try:
+            prev_lesson = Lesson.objects.filter(num__lt=id, visible=True).last()
+        except:
+            pass
+
         context.update({
-            'active_page': 'lessons', 
+            'active_page': 'lessons',
             'lesson': lesson,
             'next_lesson': next_lesson,
             'prev_lesson': prev_lesson,
@@ -69,7 +61,7 @@ class TestView(TemplateView):
 
     def get_context_data(self, id: int, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         test = get_object_or_404(Test, pk=id)
         test_json = test.test_json
         from random import shuffle
@@ -77,10 +69,9 @@ class TestView(TemplateView):
         for answers in test_json:
             shuffle(answers.get('answers'))
 
-
-        context.update({ 
-            'active_page': 'lessons', 
+        context.update({
+            'active_page': 'tests',
             'test': test,
-            'questions': test_json, 
+            'questions': test_json,
         })
         return context

@@ -1,0 +1,11 @@
+.search-container{
+  display: flex;
+  justify-content: right;
+  margin-bottom: 10pt;
+}
+
+@media only screen and (max-width: 768px) {
+    .search-container, .search-container form, .search-container form input{
+        width: 100%;
+    }
+}

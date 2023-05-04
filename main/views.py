@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 
 from .forms import RegisterUserForm, LoginUserForm
 from .models import *
+from .utils.search import SearchUtil
 
 
 class HomeView(TemplateView):
@@ -17,14 +18,25 @@ class HomeView(TemplateView):
         return context
 
 
-class LiteratureListView(ListView):
-    model = Book
-    template_name = 'main/literature.html'
-    context_object_name = 'books'
+class MediaListView(ListView):
+    template_name = 'main/media_list.html'
+    model = Media
+    context_object_name = 'all_media'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['active_page'] = 'literature'
+        context['active_page'] = 'p_media'
+        return context
+
+
+class MediaView(TemplateView):
+    template_name = 'main/media.html'
+    model = Media
+    context_object_name = 'media'
+
+    def get_context_data(self, id: int, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'p_media'
         return context
 
 
@@ -37,13 +49,29 @@ class AboutView(TemplateView):
         return context
 
 
+class SearchView(TemplateView):
+    template_name = 'app/search.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        q = request.GET.get('q', '')
+        if q:
+            searcher = SearchUtil(request.GET['q'])
+            context['search_result'] = searcher.search()
+        return self.render_to_response(context)
+
+
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
     template_name = 'main/forms/register.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['active_page'] = 'register'
+        context['active_page'] = 'logup'
         return context
 
     def form_valid(self, form):
