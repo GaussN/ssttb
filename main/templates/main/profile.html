@@ -1,0 +1,38 @@
+{% extends 'app/base.html' %}
+
+{% block style %}{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div>
+        <a href="{% url 'home_page' %}" style="text-decoration: underline;">Главная</a> >
+        <b>Профиль</b>
+    </div>
+
+    <h1>Привет {{ request.user.username }}!</h1>
+    <p>Тут ты можешь увидеть результаты своих тестов</p>
+    <div class="progress-in-tests">
+        <table class="table table-bordered .table-hover">
+            <thead>
+                <tr>
+                    <th>Тест</th>
+                    <th>Дата прохождения</th>
+                    <th>Набранных баллов</th>
+                </tr>
+            </thead>
+            {% for p in progress %}
+            <tr>
+                <td><a href="{{ p.test.get_absolute_url }}">{{p.test.topic}}</a></td>
+                <td>{{p.date}}</td>
+                <td>{{p.score}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}{% endblock %}

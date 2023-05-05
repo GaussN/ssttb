@@ -1,0 +1,28 @@
+.select-media-type div, .select-media-type{
+    display: inline;
+    text-align: center;
+}
+
+@media only screen and (max-width: 992px){
+    iframe{
+        display: none;
+    }
+}
+
+.select-media-type{
+    padding: 5pt;
+    border-radius: 5pt;
+    background-color: #353535/*#D2D7DF*/;
+}
+.select-media-type a{
+    color: #d2d7df;
+}
+
+.media{
+    display: none;
+}
+
+.selected-media{
+    display: block;
+}
+
