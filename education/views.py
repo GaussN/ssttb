@@ -1,7 +1,5 @@
-from django.views.generic import ListView, DetailView, TemplateView
-from django.http import HttpRequest, HttpResponse
+from django.views.generic import ListView, TemplateView
 from django.shortcuts import get_object_or_404
-from django.shortcuts import render
 
 from .models import *
 

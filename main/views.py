@@ -1,8 +1,7 @@
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, CreateView, DetailView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
 
 from .forms import RegisterUserForm, LoginUserForm
 from .models import *
@@ -18,23 +17,23 @@ class HomeView(TemplateView):
         return context
 
 
-class MediaListView(ListView):
+class MediaListView(TemplateView):
     template_name = 'main/media_list.html'
-    model = Media
-    context_object_name = 'all_media'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['video'] = Media.objects.filter(media_type='VIDEO')
+        context['slides'] = Media.objects.filter(media_type='SLIDES')
         context['active_page'] = 'p_media'
         return context
 
 
-class MediaView(TemplateView):
+class MediaView(DetailView):
     template_name = 'main/media.html'
     model = Media
     context_object_name = 'media'
 
-    def get_context_data(self, id: int, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['active_page'] = 'p_media'
         return context

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="jumbotron">
-    <div><a href="{% url 'home_page' %}" style="text-decoration: underline;">Учебный материал</a> > <a href="{% url 'lessons_list_page' %}" style="text-decoration: underline;">Список занятий</a> > <b>{{ lesson.topic }}</b></div>
+    <div><a href="{% url 'home_page' %}" style="text-decoration: underline;">Главная</a> > <a href="{% url 'lessons_list_page' %}" style="text-decoration: underline;">Учечбный материал</a> > <b>{{ lesson.topic }}</b></div>
 
     {% autoescape off %}
     <div>

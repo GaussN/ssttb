@@ -1,3 +1,4 @@
+import json
 from typing import Set
 
 from django.db.models.query import QuerySet
@@ -7,7 +8,7 @@ from education.models import *
 
 
 class SearchUtil:
-    def __init__(self, request):
+    def __init__(self, request: str):
         self.__request = request
 
     def __repr__(self):
@@ -34,7 +35,13 @@ class SearchUtil:
         return Test.objects.filter(topic__icontains=self.__request)
 
     def __search_in_test_texts(self) -> QuerySet | None:
-        return Test.objects.filter(test_json__icontains=self.__request)
+        searching_results = []
+        tests = Test.objects.all()
+        for test in tests:
+            test_json_str = json.dumps(test.test_json, ensure_ascii=False).encode('utf8')
+            if self.__request.lower() in test_json_str.decode().lower():
+                searching_results.append(test)
+        return searching_results
 
     def __search_in_tests(self) -> Set:
         return set(self.__search_in_test_topics()) | set(self.__search_in_test_texts())

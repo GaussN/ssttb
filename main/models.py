@@ -8,6 +8,7 @@ class Media(models.Model):
         ('SLIDES', 'SLIDES')
     ))
     header = models.CharField(max_length=300, unique=True)
+    describe = models.TextField(max_length=5000)
     url = models.URLField()
 
     def get_absolute_url(self):

@@ -1,21 +1,35 @@
 {% extends 'app/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'app/style/media.css' %}">
+{% endblock style %}
+
 
 {% block content %}
 <div class="jumbotron text-center">
+    <div class="text-left"><a href="{% url 'home_page' %}" style="text-decoration: underline;">Главная</a> > <b>Медиа</b></div>
     <h2><b>Медиа</b></h2>
     <p>видео и презентации</p>
+    <div class="select-media-type">
+            <a class="media-type selected-toggle" href="#video">VIDEO</a>
+                |
+            <a class="media-type" href="#slides">SLIDES</a>
+    </div>
 </div>
 
 {% include 'app/search-line.html' %}
 
-<div class="">
-    {% for media in all_media %}
-        <a>
+<div>
+    <div class="media video-list selected-media">
+
+        {% for media in video %}
+        <a href="{{ media.get_absolute_url }}">
             <div class="panel spanel" style="display: flex; flex-direction: row; padding: 10pt;">
                 <div>
-                    <iframe width="400px" height="300px" src="{{ media.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe width="400px" height="300px" src="{{ media.url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-                <div>
+                <div style="overflow-wrap: anywhere; padding: 10pt;">
                     <h3>{{ media.header }}</h3>
                     <p>{{ media.describe }}</p>
                 </div>
@@ -24,16 +38,33 @@
     {% empty %}
     <h3>Mедиа отсутствует</h3>
     {% endfor %}
+
+
+    </div>
+    <div class="media slides-list">
+
+        {% for media in slides %}
+        <a href="{{ media.get_absolute_url }}">
+            <div class="panel spanel" style="display: flex; flex-direction: row; padding: 10pt;">
+                <div>
+                    <iframe width="400px" height="300px" src="{{ media.url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div style="overflow-wrap: anywhere; padding: 10pt;">
+                    <h3>{{ media.header }}</h3>
+                    <p>{{ media.describe }}</p>
+                </div>
+            </div>
+        </a>
+    {% empty %}
+    <h3>Mедиа отсутствует</h3>
+    {% endfor %}
+
+
+    </div>
+
 </div>
 {% endblock %}
 
-{# comment #}
-<div class="col-md-4 grid-item">
-        <a href="{{ media.url }}">
-            <div class="panel spanel">
-                <h4 class="panel-heading" style="white-space: wrap;"><b>{{ media.header }}</b></h4>
-                <div class="panel-body">{{ media.media_type }}</div>
-            </div>
-        </a>
-    </div>
-{# comment #}
+{% block scripts  %}
+<script src="{% static 'app/script/media.js' %}"></script>
+{% endblock %}
