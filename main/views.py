@@ -1,11 +1,13 @@
 from django.views.generic import TemplateView, CreateView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 
+from education.models import Progress
 from .forms import RegisterUserForm, LoginUserForm
-from .models import *
 from .utils.search import SearchUtil
+from .models import *
 
 
 class HomeView(TemplateView):
@@ -81,7 +83,7 @@ class RegisterUser(CreateView):
 
 class LoginUser(LoginView):
     form_class = LoginUserForm
-    template_name = "main/forms/login.html"
+    template_name = 'main/forms/login.html'
 
     def get_success_url(self):
         return reverse_lazy('home_page')
@@ -95,3 +97,13 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('home_page')
+
+
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'main/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['progress'] = Progress.objects.filter(user_id=self.request.user.pk)
+        context['active_page'] = 'user_panel'
+        return context

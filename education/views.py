@@ -1,5 +1,7 @@
+import json
+
 from django.views.generic import ListView, TemplateView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 from .models import *
 
@@ -57,10 +59,10 @@ class LessonView(TemplateView):
 class TestView(TemplateView):
     template_name = 'education/test_base.html'
 
-    def get_context_data(self, id: int, **kwargs):
+    def get_context_data(self, pk: int, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        test = get_object_or_404(Test, pk=id)
+        test = get_object_or_404(Test, pk=pk)
         test_json = test.test_json
         from random import shuffle
         shuffle(test_json)
@@ -73,3 +75,13 @@ class TestView(TemplateView):
             'questions': test_json,
         })
         return context
+
+    def post(self, request, pk, *args, **kwargs):
+        request_body = json.loads(request.body)
+        score = request_body['score']
+        user_answers = request_body['answers']
+        test = Test.objects.get(pk=pk)
+        new_progress = Progress(user=request.user, test=test, score=score, user_answers=user_answers)
+        new_progress.save()
+        return redirect(reverse_lazy('test_page', args=[pk]))
+        # return self.render_to_response(self.get_context_data(pk, **kwargs))

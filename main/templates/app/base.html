@@ -40,7 +40,11 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if request.user.is_authenticated %}
-                    <li class="user_panel"><a {% if request.user.is_superuser %} href="{% url 'admin_home' %}" {% endif %}><span class="glyphicon glyphicon-user"></span> Привет {{ request.user.username }}!</a></li>
+                    <li class="user_panel">
+                        <a {% if request.user.is_superuser %} href="{% url 'admin_home' %}" {% else %} href="{% url 'profile_page' %}" {% endif %}>
+                            <span class="glyphicon glyphicon-user"></span> Привет {{ request.user.username }}!
+                        </a>
+                    </li>
                     <li  class="logout"><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                     {% else %}
                     <li class="login"><a href="{% url 'auth_page' %}"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>

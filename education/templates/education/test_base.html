@@ -14,6 +14,7 @@
     <div><a href="{% url 'home_page' %}" style="text-decoration: underline;">Главная</a> > <a href="{% url 'tests_list_page' %}" style="text-decoration: underline;">Тесты</a> > <b>{{ test.topic }}</b></div>
     <h2>{{ test.topic }}</h2>
     <form>
+        {% csrf_token %}
         <div style="margin-bottom: 20pt">
             {% for question in questions %}
             <div class="form-check question">
@@ -48,10 +49,12 @@
         <input style="float: right" id="submit-button" class="btn btn-success" type="button" value="Проверить"></input>
     </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
 
 <script>
-
-    document.querySelector('#submit-button').addEventListener('click', ()=>{ 
+    document.querySelector('#submit-button').addEventListener('click', ()=>{
         let answers = document.querySelectorAll('.form-check-input');
         for(let answer of answers){
             let label = document.querySelector(`label[for="${answer.id}"]`);
@@ -68,7 +71,7 @@
                 label.parentNode.style = "height: 100%; background: repeating-linear-gradient(-60deg, #dff0d8 0, #dff0d8 3px, transparent 1px, transparent 8px);";
             }
         }
-        
+
         let questions = document.querySelectorAll(".question");
         let rqcount = 0; // количество правильных ответов
         for (let question of questions){
@@ -82,17 +85,37 @@
             }
         }
         //сбор ответов пользователя
-        let user_answers = {}
-        for(question in questions){
-            let answers = {}
-            for (let answer in question.querySelectorAll('div')){
-                if (answer.querySelector('input').checked) answers[answer.querySelector('label')]
+        let user_answers = []
+        for(let question of questions){
+            let question_obj = {
+                "question": question.querySelector('h3').innerHTML,
+                "answers": []
             }
-            user_answers[question.querySelector('h2').text] = answers;
+            for (let answer of question.querySelectorAll('div')){
+                if (answer.querySelector('input').checked) {
+                    let answer_obj = {
+                        "answer": answer.querySelector('label').innerHTML,
+                        "right": answer.querySelector('input').classList.contains('right-answer')
+                    };
+                    question_obj['answers'].push(answer_obj);
+                }
+            }
+            user_answers.push(question_obj)
         }
-        console.log(user_answers);
 
+        let obj = {
+            "score": rqcount,
+            "answers": user_answers
+        }
+
+        fetch(window.location.href, {
+            method: "post",
+            body: JSON.stringify(obj),
+			headers: {
+				"X-CSRFToken": [$("input[name=csrfmiddlewaretoken]").val()]
+			}
+        });
     });
-
 </script>
+
 {% endblock %}

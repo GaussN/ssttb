@@ -33,12 +33,11 @@ class Test(models.Model):
 
 
 class Progress(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    test_id = models.ForeignKey(Test, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
     date = models.DateTimeField(default=datetime.datetime.now(), auto_created=True, editable=False)
     score = models.IntegerField()
     user_answers = models.JSONField()
-    test_json = models.JSONField()
 
     # def get_absolute_utl(self, id:int):
 
