@@ -43,10 +43,6 @@ a.null-link:hover>div{
     font-size: 15pt;
 }
 
-p{
-    text-indent: 1.5em;
-}
-
 .list{
         text-align: justify;
 }
@@ -71,7 +67,17 @@ p{
         text-align: center;
     }
 }
+
 form label, form > button{
     width: 100%;
     margin-top: 5pt;
+}
+
+.table-link{
+    display: block;
+}
+
+thead{
+    background-color: #353535;
+    color: #D2D7DF;
 }

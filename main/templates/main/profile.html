@@ -13,7 +13,7 @@
     <h1>Привет {{ request.user.username }}!</h1>
     <p>Тут ты можешь увидеть результаты своих тестов</p>
     <div class="progress-in-tests">
-        <table class="table table-bordered .table-hover">
+        <table class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>Тест</th>
@@ -23,9 +23,9 @@
             </thead>
             {% for p in progress %}
             <tr>
-                <td><a href="{{ p.test.get_absolute_url }}">{{p.test.topic}}</a></td>
+                <td><a href="{{ p.test.get_absolute_url }}" class="table-link">{{p.test.topic}}</a></td>
                 <td>{{p.date}}</td>
-                <td>{{p.score}}</td>
+                <td><a href="{{ p.get_absolute_utl }}" class="table-link">{{p.score}}</a></td>
             </tr>
             {% endfor %}
         </table>

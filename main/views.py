@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
@@ -59,7 +60,7 @@ class SearchView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        q = request.GET.get('q', '')
+        q = request.GET.get('q')
         if q:
             searcher = SearchUtil(request.GET['q'])
             context['search_result'] = searcher.search()
@@ -107,3 +108,35 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         context['progress'] = Progress.objects.filter(user_id=self.request.user.pk)
         context['active_page'] = 'user_panel'
         return context
+
+    def get(self, request, **kwargs):
+        if request.user.is_superuser:
+            return HttpResponse('''
+            <h3><a href="/">Выход!</a></h3>
+            <h1>Админам сюда нельзя</h1>
+            <img src="https://static.rustore.ru/apk/1366735807/content/ICON/6a0cf744-3639-4b38-be33-0359289f252c.png">
+            ''')
+        return self.render_to_response(self.get_context_data(**kwargs))
+
+
+class TestResultView(LoginRequiredMixin, TemplateView):
+    template_name = "main/result.html"
+
+    def get_context_data(self, pk, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['progress'] = Progress.objects.get(pk=pk)
+        context['number_correct_answers_in_test'] = 0
+        for question in context['progress'].test.test_json:
+            for answer in question['answers']:
+                if answer['right']:
+                    context['number_correct_answers_in_test'] += 1
+        return context
+
+    def get(self, request, **kwargs):
+        if request.user.is_superuser:
+            return HttpResponse('''
+            <h3><a href="/">Выход!</a></h3>
+            <h1>Админам сюда нельзя</h1>
+            <img src="https://static.rustore.ru/apk/1366735807/content/ICON/6a0cf744-3639-4b38-be33-0359289f252c.png">
+            ''')
+        return self.render_to_response(self.get_context_data(**kwargs))

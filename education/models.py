@@ -35,11 +35,12 @@ class Test(models.Model):
 class Progress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=datetime.datetime.now(), auto_created=True, editable=False)
+    date = models.DateTimeField(default=datetime.datetime.now, auto_created=True, editable=False)
     score = models.IntegerField()
     user_answers = models.JSONField()
 
-    # def get_absolute_utl(self, id:int):
+    def get_absolute_utl(self):
+        return reverse_lazy("results_page", args=[self.pk])
 
     class Meta:
         verbose_name = 'Прогресс'

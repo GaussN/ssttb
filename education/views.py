@@ -1,5 +1,6 @@
 import json
 
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView, TemplateView
 from django.shortcuts import get_object_or_404, redirect
 
@@ -77,11 +78,13 @@ class TestView(TemplateView):
         return context
 
     def post(self, request, pk, *args, **kwargs):
+        if request.user.is_superuser:
+            return self.render_to_response(self.get_context_data(**kwargs))
         request_body = json.loads(request.body)
         score = request_body['score']
         user_answers = request_body['answers']
-        test = Test.objects.get(pk=pk)
+        test = Test.objects.get()
         new_progress = Progress(user=request.user, test=test, score=score, user_answers=user_answers)
         new_progress.save()
-        return redirect(reverse_lazy('test_page', args=[pk]))
-        # return self.render_to_response(self.get_context_data(pk, **kwargs))
+        # return redirect(reverse_lazy('test_page', args=[pk]) + '?pre=1')
+        return HttpResponseRedirect(reverse_lazy('search') + '?q=Егор')

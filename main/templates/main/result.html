@@ -1,0 +1,48 @@
+{% extends 'app/base.html' %}
+
+{% block style %}{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div>
+        <a href="{% url 'home_page' %}" style="text-decoration: underline;">Главная</a> >
+        <a href="{% url 'profile_page' %}" style="text-decoration: underline;">Профиль</a> >
+        <b>Результат теста</b>
+    </div>
+
+    <h2>Результаты прохождения теста <a style="text-decoration: underline;" href="{{ progress.test.get_absolute_url }}">"{{ progress.test.topic }}"</a></h2>
+    <h3>Пройден: {{ progress.date }}</h3>
+    <h3>Набрано баллов: {{ progress.score }} / {{number_correct_answers_in_test}} </h3>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Выбранный ответ</th>
+                <th>Верный?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in progress.user_answers %}
+                <tr>
+                    <th>{{ question.question }}</th>
+                </tr>
+                {% for answer in question.answers %}
+                    {% if answer.right %}
+                    <tr class="bg-success">
+                    {% else %}
+                    <tr class="bg-danger">
+                    {% endif %}
+                        <td>{{ answer.answer }}</td>
+                        <td>{{ answer.right }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}{% endblock %}

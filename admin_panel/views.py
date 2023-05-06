@@ -40,7 +40,7 @@ def records_list(request: HttpRequest, **kwargs):
 @login_required
 @user_passes_test(lambda user: user.is_superuser)
 def test_update(request: HttpRequest, id: int):
-    return render(request, 'admin_panel/test.html', {'test': Test.objects.get(pk=id)})
+    return render(request, 'admin_panel/test.html', {'test': Test.objects.get()})
 
 
 @login_required
