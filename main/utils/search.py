@@ -1,6 +1,3 @@
-import json
-from typing import Set
-
 from django.db.models.query import QuerySet, Q
 from main.models import *
 from education.models import *
@@ -32,7 +29,6 @@ class SearchUtil:
             Q(topic__icontains=self.__request) |
             Q(test_json__icontains=self.__request.encode('unicode-escape').decode())
         )
-
 
     def __search_in_media(self) -> QuerySet:
         return Media.objects.filter(header__icontains=self.__request)

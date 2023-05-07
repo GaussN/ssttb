@@ -95,7 +95,7 @@ class LoginUser(LoginView):
     template_name = 'main/forms/login.html'
 
     def get_success_url(self):
-        return reverse_lazy('home_page')
+        return self.request.GET.get('next', reverse_lazy('home_page'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
