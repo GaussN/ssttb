@@ -1,3 +1,5 @@
+from math import ceil
+
 from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -5,7 +7,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 
-from education.models import Progress
+from education.models import Progress, Test
 from .forms import RegisterUserForm, LoginUserForm
 from .utils.search import SearchUtil
 from .models import *
@@ -17,6 +19,13 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['active_page'] = 'home'
+        if not self.request.user.is_superuser:
+            context['progress_percent'] = \
+                ceil(
+                    Progress.objects.filter(user_id=8).values('test_id').distinct().count()
+                    / Test.objects.count()
+                    * 100
+                )
         return context
 
 
@@ -104,7 +113,17 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['progress'] = Progress.objects.filter(user_id=self.request.user.pk)
+        # context['progress'] = Progress.objects.filter(user=self.request.user.pk)
+        context['progress'] = Progress.objects.raw(
+            "SELECT *, MAX(date) FROM education_progress GROUP BY test_id ORDER BY date ASC"
+        )
+        '''
+        objects
+    .filter(user_id=8)
+    .values('test_id')
+    .annotate(max_date=Max('date'))
+    .order_by('-max_date')
+        '''
         context['active_page'] = 'user_panel'
         return context
 
