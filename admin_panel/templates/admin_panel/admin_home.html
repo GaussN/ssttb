@@ -1,17 +1,29 @@
 {% extends 'admin_panel/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<div class="list text-center">
-
-    {% for table in tables %}
-    <a class="list-link-item link" href="{{ table.table_url }}">
-        <div class="panel spanel">{{ table.table_name }}</div>
-    </a>
-    {% endfor %}
-
+<div class="jumbotron">
+    <div class="text-left">
+        <b>Админ панель</b>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Таблица</th>
+                <th>Количество записей</th>
+                <th>Добавить</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for model in models %}
+            <tr>
+                <td>{{model.meta.verbose_name_plural }}</td>
+                <td>{{model.objects.count}}</td>
+                <td><a href="#add" class="table-link">+</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-
-
 {% endblock content %}
-

@@ -1,34 +1,36 @@
 import json
 
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
-from django.urls import reverse_lazy
 from django.db import utils
 
+from education.admin import *
 from education.models import *
+from main.admin import MediaAdmin
+from main.models import Media
 
 
-admin_tables = [
-    {
-        'table_name': 'Test',
-        'table_url': reverse_lazy('tests'),
-    },
-    {
-        'table_name': 'Lesson',
-        'table_url': reverse_lazy('lessons'),
-    },
-    {
-        'table_name': 'User',
-        'table_url': reverse_lazy('users'),
-    },
-]
+class AdminHome(UserPassesTestMixin, TemplateView):
+    template_name = 'admin_panel/admin_home.html'
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
-@login_required
-@user_passes_test(lambda user: user.is_superuser)
-def admin_home(request: HttpRequest):
-    return render(request, 'admin_panel/admin_home.html', {'tables': admin_tables})
+    def handle_no_permission(self):
+        return redirect('/login/?next=/admin/')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['models'] = [
+            {'meta': Test._meta, 'objects': Test.objects, 'admin_model': TestAdmin},
+            {'meta': Lesson._meta, 'objects': Lesson.objects, 'admin_model': LessonAdmin},
+            {'meta': Media._meta, 'objects': Media.objects, 'admin_model': MediaAdmin},
+            {'meta': User._meta, 'objects': User.objects, 'admin_model': type('UserAdmin', (), {'list_display': ('username', 'login', 'email', 'is_superuser')})},
+        ]
+        return context
 
 
 @login_required

@@ -4,31 +4,10 @@ from education.models import *
 
 
 class LessonAdmin(admin.ModelAdmin):
-    @admin.action(description="Увеличить значения num")
-    def increment(modelamdin, request, queryset):
-        queryset = queryset.order_by('-num')
-        for i in queryset:
-            try:
-                i.num += 1
-                i.save()
-            except:
-                print('unique constraint')
-
-    @admin.action(description="Уменьшить значения num")
-    def decrement(modelamdin, request, queryset):
-        queryset = queryset.order_by('-num')
-        for i in queryset:
-            try:
-                i.num -= 1
-                i.save()
-            except:
-                print('unique constraint')
-
     list_display = ('num', 'topic', 'page', 'visible', )
     list_filter = ('visible', )
     search_fields = ('num', 'topic',)
     ordering = ('num', )
-    actions = (increment, decrement, )
 
 
 class TestAdmin(admin.ModelAdmin):

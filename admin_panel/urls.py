@@ -6,7 +6,7 @@ from education.models import Test, Lesson
 
 
 urlpatterns = [
-    path('', views.admin_home, name="admin_home"),
+    path('', views.AdminHome.as_view(), name="admin_home"),
     path('test/<int:id>/', views.test_update, name="test_update"),
     path('test/add', views.test_add, name="test_add"),
     path('lesson/<int:id>/', views.test_update, name="lesson_edit"),
