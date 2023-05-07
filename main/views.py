@@ -25,8 +25,7 @@ class MediaListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['video'] = Media.objects.filter(media_type='VIDEO')
-        context['slides'] = Media.objects.filter(media_type='SLIDES')
+        context['media'] = Media.objects.filter(media_type=self.request.GET.get('media', 'VIDEO'))
         context['active_page'] = 'p_media'
         return context
 

@@ -1,28 +1,23 @@
-.select-media-type div, .select-media-type{
+.select-media-type a{
+    color: #d2d7df;
+    color: #333;
+}
+
+
+.select-media-type,
+.select-media-type div{
     display: inline;
     text-align: center;
+}
+
+.select-media-type .selected-toggle{
+    background-color: #333;
+    color: #d2d7df;
+    padding: 3pt;
+    border-radius: 50pt;
 }
 
 @media only screen and (max-width: 992px){
     iframe{
         display: none;
     }
-}
-
-.select-media-type{
-    padding: 5pt;
-    border-radius: 5pt;
-    background-color: #353535/*#D2D7DF*/;
-}
-.select-media-type a{
-    color: #d2d7df;
-}
-
-.media{
-    display: none;
-}
-
-.selected-media{
-    display: block;
-}
-

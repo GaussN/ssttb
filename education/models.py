@@ -40,7 +40,7 @@ class Progress(models.Model):
     user_answers = models.JSONField()
 
     def get_absolute_utl(self):
-        return reverse_lazy("results_page", args=[self.pk])
+        return reverse_lazy("result_page", args=[self.pk])
 
     class Meta:
         verbose_name = 'Прогресс'

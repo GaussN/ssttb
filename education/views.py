@@ -83,8 +83,7 @@ class TestView(TemplateView):
         request_body = json.loads(request.body)
         score = request_body['score']
         user_answers = request_body['answers']
-        test = Test.objects.get()
+        test = Test.objects.get(pk=pk)
         new_progress = Progress(user=request.user, test=test, score=score, user_answers=user_answers)
         new_progress.save()
-        # return redirect(reverse_lazy('test_page', args=[pk]) + '?pre=1')
-        return HttpResponseRedirect(reverse_lazy('search') + '?q=Егор')
+        return redirect(reverse_lazy('result_page', args=[new_progress.pk]))

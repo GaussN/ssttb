@@ -12,56 +12,40 @@
     <h2><b>Медиа</b></h2>
     <p>видео и презентации</p>
     <div class="select-media-type">
-            <a class="media-type selected-toggle" href="#video">VIDEO</a>
+            <a class="media-type {%if request.GET.media == 'VIDEO'%}selected-toggle{%endif%}" href="?media=VIDEO">VIDEO</a>
                 |
-            <a class="media-type" href="#slides">SLIDES</a>
+            <a class="media-type {%if request.GET.media == 'SLIDES'%}selected-toggle{%endif%}" href="?media=SLIDES">SLIDES</a>
     </div>
 </div>
 
 {% include 'app/search-line.html' %}
 
 <div>
-    <div class="media video-list selected-media">
+    <div class="media video-list">
 
-        {% for media in video %}
-        <a href="{{ media.get_absolute_url }}">
+        {% for m in media %}
+        <a href="{{ m.get_absolute_url }}">
             <div class="panel spanel" style="display: flex; flex-direction: row; padding: 10pt;">
                 <div>
-                    <iframe width="400px" height="300px" src="{{ media.url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe
+                            width="400px"
+                            height="300px"
+                            src="{{ m.url }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
                 </div>
                 <div style="overflow-wrap: anywhere; padding: 10pt;">
-                    <h3>{{ media.header }}</h3>
-                    <p>{{ media.describe }}</p>
+                    <h3>{{ m.header }}</h3>
+                    <p>{{ m.describe }}</p>
                 </div>
             </div>
         </a>
     {% empty %}
     <h3>Mедиа отсутствует</h3>
     {% endfor %}
-
-
     </div>
-    <div class="media slides-list">
-
-        {% for media in slides %}
-        <a href="{{ media.get_absolute_url }}">
-            <div class="panel spanel" style="display: flex; flex-direction: row; padding: 10pt;">
-                <div>
-                    <iframe width="400px" height="300px" src="{{ media.url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-                <div style="overflow-wrap: anywhere; padding: 10pt;">
-                    <h3>{{ media.header }}</h3>
-                    <p>{{ media.describe }}</p>
-                </div>
-            </div>
-        </a>
-    {% empty %}
-    <h3>Mедиа отсутствует</h3>
-    {% endfor %}
-
-
-    </div>
-
 </div>
 {% endblock %}
 

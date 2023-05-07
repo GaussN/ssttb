@@ -34,8 +34,13 @@
                     <tr class="bg-danger">
                     {% endif %}
                         <td>{{ answer.answer }}</td>
-                        <td>{{ answer.right }}</td>
+                        <td>{% if answer.right %} + {% else %} - {% endif %}</td>
                     </tr>
+                {% empty %}
+                <tr class="bg-danger">
+                    <td>Вы не выбрали ответы</td>
+                    <td>-</td>
+                </tr>
                 {% endfor %}
             {% endfor %}
         </tbody>
