@@ -72,7 +72,7 @@ class SearchView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        q = request.GET.get('q')
+        q = request.GET.get('q', )
         if q:
             searcher = SearchUtil(request.GET['q'])
             context['search_result'] = searcher.search()

@@ -1,0 +1,22 @@
+{% extends 'admin_panel/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron">
+<div>
+	<a href="{% url 'admin_home' %}" style="text-decoration: underline;">Админ панель</a> > <a href="">{{ meta.verbose_name_plural }}</a> > <b>{{ object.topic }}</b>
+</div>
+  <div class="container container-sm">
+		<form action="" method="post">
+			{% csrf_token %}
+			<label>Topic</label>
+			<input type="text" name="topic" value="{{ object.topic }}">
+			<label>Page</label>
+			<textarea name="page">{{ object.page }}</textarea>
+			<label>Visible</label>
+			<input type="checkbox" name="visible" {% if object.visible %}checked{% endif %}>
+			<input type="submit">
+		</form>
+	</div>
+</div>
+{% endblock %}

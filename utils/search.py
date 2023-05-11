@@ -33,5 +33,5 @@ class SearchUtil:
     def __search_in_media(self) -> QuerySet:
         return Media.objects.filter(
             Q(header__icontains=self.__request) |
-            Q(describe__incontains=self.__request)
+            Q(describe__icontains=self.__request)
         )
