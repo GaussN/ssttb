@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 
 from education.models import Progress, Test
 from .forms import RegisterUserForm, LoginUserForm
-from .utils.search import SearchUtil
+from utils.search import SearchUtil
 from .models import *
 
 
@@ -19,7 +19,11 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['active_page'] = 'home'
-        if not self.request.user.is_superuser:
+        if self.request.user.is_superuser:
+           return context
+
+        context['progress_percent'] = 0
+        if Test.objects.count():
             context['progress_percent'] = \
                 ceil(
                     Progress.objects.filter(user_id=8).values('test_id').distinct().count()
@@ -117,13 +121,6 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         context['progress'] = Progress.objects.raw(
             "SELECT *, MAX(date) FROM education_progress GROUP BY test_id ORDER BY date ASC"
         )
-        '''
-        objects
-    .filter(user_id=8)
-    .values('test_id')
-    .annotate(max_date=Max('date'))
-    .order_by('-max_date')
-        '''
         context['active_page'] = 'user_panel'
         return context
 

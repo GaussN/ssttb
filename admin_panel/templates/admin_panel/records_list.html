@@ -1,32 +1,48 @@
 {% extends 'admin_panel/base.html' %}
 {% load tags %}
 
+{%block style%}
+<style>
+    table{
+        width: 100%;
+    }
+</style>
+{%endblock%}
+
 {% block content %}
 <div class="jumbotron">
 <div>
-    <a href="{% url 'admin_home' %}" style="text-decoration: underline;">Admin</a> > <b>{% get_model_name model %}</b>
+    <a href="{% url 'admin_home' %}" style="text-decoration: underline;">Админ панель</a> > <b>{{ meta.verbose_name_plural }}</b>
 </div>
+    <div style="display: flex; justify-content: right; margin: 5pt 0;">
+        <a href="add">
+            <button class="btn btn-success">Добавить тест</button>
+        </a>
+    </div>
 
-<table>
-    <thead>
-    <tr>
-        {% get_fields model as fields %}
-        {% for field in fields %}
-        <th>{% get_verbose_name field %}</th>
-        {% endfor %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for obj in queryset %}
-    <tr onclick="window.location.href='{{ obj.id }}'; return false">
-        {% for field in fields %}
-        {% get_name field as filed_name %}
-        {% get_attr obj filed_name as attr%}
-        <td>{{ attr|truncatewords:50|slice:":30" }}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    <table class="table hover-table table-bordered">
+        <thead>
+            <tr>
+                {% for field in list_display %}
+                    <th>{% get_attr_verbose_name_from_meta meta field %}</th>
+                {% endfor %}
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in objects %}
+                <tr>
+                    {% for field in list_display %}
+                        {% get_attr object field as f %}
+                        <td><a  href="{{ object.pk }}" class="table-link">{{ f|truncatechars:50 }}</a></td>
+                    {% endfor %}
+                    <td>
+                        <a href="{{ object.pk }}/delete" class="table-link text-danger">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 </div>
 {% endblock content %}

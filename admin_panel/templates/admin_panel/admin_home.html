@@ -18,9 +18,9 @@
         <tbody>
             {% for model in models %}
             <tr>
-                <td>{{model.meta.verbose_name_plural }}</td>
+                <td><a href="{{model.meta.app_label}}/{{model.meta.model_name}}" class="table-link">{{model.meta.verbose_name_plural }}</a></td>
                 <td>{{model.objects.count}}</td>
-                <td><a href="#add" class="table-link">+</a></td>
+                <td><a href="{{model.meta.app_label}}/{{model.meta.model_name}}/add" class="table-link">+</a></td>
             </tr>
             {% endfor %}
         </tbody>

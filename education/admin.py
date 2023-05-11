@@ -11,16 +11,16 @@ class LessonAdmin(admin.ModelAdmin):
 
 
 class TestAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'topic', 'visible')
+    list_display = ('id', 'topic', 'visible')
     list_filter = ('visible', )
     search_fields = ('pk', 'topic',)
-    ordering = ('pk', 'topic', )
+    ordering = ('id', 'topic', )
 
 
 class ProgressAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'user_id', 'test_id', 'date', 'score')
+    list_display = ('id', 'user_id', 'test_id', 'date', 'score')
     list_filter = ('date', 'user_id', 'test_id')
-    ordering = ('pk', 'score', 'date')
+    ordering = ('id', 'score', 'date')
 
 
 admin.site.register(Lesson, LessonAdmin)
