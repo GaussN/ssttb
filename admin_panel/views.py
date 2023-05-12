@@ -55,7 +55,10 @@ class RecordView(SuperuserTestMixin, TemplateView):
             raise Http404()
         context['object'] = model.objects.get(pk=pk)
         context['meta'] = model._meta
-        context['form'] = forms_relation.get(model, modelform_factory(model, fields='__all__'))(instance=context['object'])
+        # что-то с чем-то
+        context['form'] = forms_relation.get(
+            model, modelform_factory(model, fields='__all__')
+        )(instance=context['object'])
         return context
 
     def get(self, request: HttpRequest, app: str, model: str, pk: int, **kwargs):
