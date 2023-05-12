@@ -10,10 +10,9 @@
 <div>
 	<a href="{% url 'admin_home' %}" style="text-decoration: underline;">Админ панель</a> >
 	<a href="../" style="text-decoration: underline;">{{ meta.verbose_name_plural }}</a> >
-	<b>{{ object.topic }}</b>
+	<b>{{ object.header }}</b>
 </div>
-	{% include 'app/error_message.html' %}
-  	<div>
+  <div>
 		<form action="" method="post">
 			{% csrf_token %}
 			{{ form.as_p }}

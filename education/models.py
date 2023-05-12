@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
@@ -13,6 +14,12 @@ class Lesson(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy("lesson_page", args=[self.num])
+
+    def update(self, post):
+        self.num = post.get('num', self.num)
+        self.topic = post.get('topic', self.topic)
+        self.page = post.get('page', self.page)
+        self.visible = post.get('visible') == 'on' or self.visible
 
     class Meta:
         verbose_name = 'Темы учебного материала'

@@ -1,22 +1,22 @@
 $('document').ready(() => {
-	let answer_template = '<div class="answer form-group form-inline" style="display: flex; flex-direction: row; justify-content: space-between">'+
-		'<label class="control-label">Answer:</label>'+
+	let answer_template = '<div class="answer form-group form-inline" > '+
+		'<label class="control-label">Ответ:</label>'+
 		'<input style="width: 100%" type="text" class="form-control" name="answer_text">'+
-		'<label>Right:</label>'+
+		'<label>Правильный:</label>'+
 		'<input type="checkbox" class="form-checkbox" name="is_right">'+
 		'<button type="button" class="btn btn-danger remove-answer"><span class="glyphicon glyphicon-trash"></span></button>'+
 	'</div>';
 	let question_template = '<div class="panel question">'+
 		'<div class="form-group">'+
-			'<label>Question:</label>'+
+			'<label>Вопрос:</label>'+
 			'<input type="text" class="form-control" name="question_text">'+
-			'<label>Multianswer:</label>'+
+			'<label>Несколько ответов:</label>'+
 			'<input type="checkbox" class="form-checkbox" name="is_multianswer">'+
 		'</div>'+
 		'<div class="answers">'+
 		'</div>'+
-		'<button type="button" class="btn btn-danger del-question">Del question</button>'+
-		'<button type="button" class="btn btn-success add-answer" >Add answer</button><br>'+
+		'<button type="button" class="btn btn-danger del-question">Удалить ответ</button>'+
+		'<button type="button" class="btn btn-success add-answer" >Добавить ответ</button><br>'+
 	'</div>';
 	function set_handlers(){
 		$("button").off();
@@ -38,9 +38,9 @@ $('document').ready(() => {
 		$("button.submit").click((event)=>{
 			event.preventDefault();
 			let testObj = {
-				"title": $("input[name=test_title]").val(),
+				"topic": $("input[name=test_title]").val(),
 				"visible": $("input[name=test_visible]").prop("checked"),
-				"questions": []
+				"test_json": []
 			};
 	
 			let questions = $("div.question");
@@ -58,18 +58,24 @@ $('document').ready(() => {
 					};
 					questionObj["answers"].push(asnwerObj);
 				}
-				testObj["questions"].push(questionObj);
+				testObj["test_json"].push(questionObj);
 			}
-			//console.log(testObj);
+			testObj["test_json"] = JSON.stringify(testObj["test_json"])
 		   	$.ajax({
 				url: window.location.href,
 				method: "POST",
-				data: JSON.stringify(testObj),
+				data: testObj,
 				headers: {
 					"X-CSRFToken": [$("input[name=csrfmiddlewaretoken]").val()]
 				}
-			}).fail(() => {
-				alert("fail");
+				success: (response)=>{
+				    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+				},
+				error: () => {
+				    alert("fail");
+				}
 			});
 			//fetch(window.location.href)
 		});

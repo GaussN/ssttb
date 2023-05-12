@@ -1,12 +1,13 @@
 from django.contrib import admin
-from django.shortcuts import render
+from django.forms import modelform_factory
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpRequest
 from django.apps import apps
 
 from admin_panel.mixins import SuperuserTestMixin
 from education.models import *
-from main.models import *
+from .forms import *
 
 
 class AdminHome(SuperuserTestMixin, TemplateView):
@@ -54,32 +55,13 @@ class RecordView(SuperuserTestMixin, TemplateView):
             raise Http404()
         context['object'] = model.objects.get(pk=pk)
         context['meta'] = model._meta
+        context['form'] = forms_relation.get(model, modelform_factory(model, fields='__all__'))(instance=context['object'])
         return context
 
-    def get(self, request, app, model, pk, **kwargs):
+    def get(self, request: HttpRequest, app: str, model: str, pk: int, **kwargs):
         template_name = f'admin_panel/{model}.html'
         context = self.get_context_data(app, model, pk, **kwargs)
         return render(request, template_name, context)
 
-
-    def post(self, request, app, model ):
-        return ...
-
-
-# @login_required
-# @user_passes_test(lambda user: user.is_superuser)
-# def test_add(request: HttpRequest):
-#     if request.method == 'POST':
-#         post = json.loads(request.body)
-#         try:
-#             test = Test(
-#                 topic=post.get('title'),
-#                 test_json=post.get('questions'),
-#                 visible=post.get('visible')
-#             )
-#             test.save()
-#         except utils.Error as er:
-#             print(f"{er=}")
-#             # возврат json с сообщением: "успех"/"не успех"
-#             return redirect(reverse_lazy('tests'))
-#     return render(request, 'admin_panel/test.html')
+    def post(self, request, app, model, pk, **kwargs):
+        return HttpResponse('KURWA')
