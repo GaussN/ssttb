@@ -86,4 +86,4 @@ class TestView(TemplateView):
         test = Test.objects.get(pk=pk)
         new_progress = Progress(user=request.user, test=test, score=score, user_answers=user_answers)
         new_progress.save()
-        return redirect(reverse_lazy('result_page', args=[new_progress.pk]))
+        return redirect('result_page', pk=new_progress.pk)

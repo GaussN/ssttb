@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.forms import modelform_factory
 from django.shortcuts import render, redirect
+from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView
 from django.http import Http404, HttpResponse, HttpRequest
 from django.apps import apps
 
 from admin_panel.mixins import SuperuserTestMixin
-from education.models import *
 from .forms import *
 
 
@@ -70,13 +70,14 @@ class RecordView(SuperuserTestMixin, TemplateView):
     def post(self, request, app, model, pk, **kwargs):
         model_cls = apps.get_model(app, model)
         obj = model_cls.objects.get(pk=pk)
-        form = forms_relation.get(
+        form_cls = forms_relation.get(
             model_cls, modelform_factory(model_cls, fields='__all__')
         )
-        form = form(request.POST, instance=obj)
+
+        form = form_cls(request.POST, instance=obj)
         if form.is_valid():
             form.save()
-            return redirect('..')
+            return redirect('records_list', app=app, model=model, permanent=True)
 
         template_name = f'admin_panel/{model}.html'
         context = self.get_context_data(app, model, pk, **kwargs)

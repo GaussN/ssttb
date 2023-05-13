@@ -52,32 +52,56 @@ $('document').ready(() => {
 				};
 				let answers = $(question).find("div.answer");
 				for(let answer of answers){
-					let asnwerObj = {
+					let answerObj = {
 						"answer": $(answer).find("input[name=answer_text]").val(),
 						"right": $(answer).find("input[name=is_right]").prop("checked")
 					};
-					questionObj["answers"].push(asnwerObj);
+					questionObj["answers"].push(answerObj);
 				}
 				testObj["test_json"].push(questionObj);
 			}
 			testObj["test_json"] = JSON.stringify(testObj["test_json"])
-		   	$.ajax({
-				url: window.location.href,
-				method: "POST",
-				data: testObj,
-				headers: {
-					"X-CSRFToken": [$("input[name=csrfmiddlewaretoken]").val()]
-				},
-				success: (response)=>{
-				    if (response.redirected) {
-                        window.location.href = response.url;
+
+            // проверка вопросов ответов
+            // я не смог сделать это на сервере
+            // (за это мне тоже стыдно)
+            let err = $('span.form-error-message')
+            for (let question of $("div.question")){
+                if ($(question).find("input[type=text]").val() == ""){
+                    alert("Вопрос должен содержать текст");
+                    //err.text("gena");
+                    return;
+                }
+                if ($(question).find(".answers>.answer").length==0){
+                    alert("Вопрос должен иметь ответы");
+                    return;
+                }
+                let have_right = false;
+                for (let answer of $(question).find(".answers>.answer")){
+                    if($(answer).find('input[type=text]').val()==""){
+                        alert("Ответы не должны быть пустыми");
+                        return;
                     }
-				},
-				error: () => {
-				    alert("fail");
-				}
-			});
-			//fetch(window.location.href)
+                    if($(answer).find('input[type=checkbox]').prop("checked")){
+                        have_right = true;
+                        break;
+                    }
+                }
+                if (!have_right){
+                    alert('Вопрос должен содержать правильные ответы');
+                    return;
+                }
+            }
+            //
+
+            // Мне стыдно зи этот костыль
+            let form = $('.hide-block>form');
+            let topic = form.find('input[name=topic]'); topic.val(testObj['topic']);
+            let test_json = form.find('textarea[name=test_json]'); test_json.val(testObj['test_json']);
+            let visible = form.find('input[name=visible]'); visible.val(testObj['visible']);
+
+            form.submit();
+            //
 		});
 	}
 	set_handlers();

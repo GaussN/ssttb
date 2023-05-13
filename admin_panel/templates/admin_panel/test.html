@@ -16,9 +16,9 @@
 	{% include 'app/message.html' %}
 	<div>
 		<div>
-             {% for ner in form.non_field_errors %}
-                <span class="form-error-message">{{ ner }}</span>
-             {% endfor %}
+			{% for ner in form.non_field_errors %}
+				<span class="form-error-message">{{ ner }}</span>
+			{% endfor %}
 			{% for f in form %}
 				{% for er in f.errors %}
 					<span class="form-error-message">{{ er }}</span><br>
@@ -63,6 +63,13 @@
 			<button type="submit" class="btn btn-success submit">Сохранить</button>
 		</form>
 	</div>
+</div>
+<div class="hide-block" style="display: none">
+	<!--Мне стыдно за этот костыль-->
+	<form action="" method="post">
+	{%	csrf_token%}
+	{{form}}
+	</form>
 </div>
 {% endblock %}
 

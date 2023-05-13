@@ -48,3 +48,6 @@ thead{
     background-color: #353535;
     color: #D2D7DF;
 }
+.form-error-message{
+    color: #FF6060;
+}

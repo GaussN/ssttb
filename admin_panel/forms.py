@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db.models import Q
 
 from education.models import Lesson, Test
 from main.models import Media
@@ -21,6 +23,17 @@ class TestForm(forms.ModelForm):
     class Meta:
         model = Test
         fields = ('topic', 'test_json', 'visible')
+
+    def clean_test_json(self):
+        test_json = self.cleaned_data['test_json']
+        for question in test_json:
+            if not question['text']:
+                raise ValidationError('Вопрос не может быть пустым')
+            if not question['answers']:
+                raise ValidationError('Вопрос не может быть без ответов')
+            # if any(i['right'] for i in question['answers']):
+            #     raise ValidationError('Вопрос должен содержать правильный ответ')
+        return test_json
 
 
 class MediaForm(forms.ModelForm):
@@ -46,6 +59,12 @@ class UserForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'is_superuser': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
         }
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        # if User.objects.filter(email=email):
+        #     raise ValidationError('Почта уже используется')
+        return email
 
 
 forms_relation = {
