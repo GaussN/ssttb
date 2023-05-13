@@ -67,7 +67,7 @@ $('document').ready(() => {
 				data: testObj,
 				headers: {
 					"X-CSRFToken": [$("input[name=csrfmiddlewaretoken]").val()]
-				}
+				},
 				success: (response)=>{
 				    if (response.redirected) {
                         window.location.href = response.url;

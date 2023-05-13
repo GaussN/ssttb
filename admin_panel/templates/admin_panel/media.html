@@ -12,11 +12,25 @@
 	<a href="../" style="text-decoration: underline;">{{ meta.verbose_name_plural }}</a> >
 	<b>{{ object.header }}</b>
 </div>
-  <div>
+  {% include 'app/message.html' %}
+  	<div>
+		<div>
+             {% for ner in form.non_field_errors %}
+                <span class="form-error-message">{{ ner }}</span>
+             {% endfor %}
+         </div>
 		<form action="" method="post">
 			{% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit">
+			{% for f in form %}
+			<div class="form-group">
+				<label for="{{ f.id_for_label }}">{{ f.label }}</label>
+				{{ f }}
+				{% for er in f.errors %}
+				<span class="form-error-message">{{ er }}</span><br>
+				{% endfor %}
+			</div>
+			{% endfor %}
+			<input type="submit" class="btn btn-success" value="Сохранить">
 		</form>
 	</div>
 </div>

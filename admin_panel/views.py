@@ -28,7 +28,7 @@ class RecordsListView(SuperuserTestMixin, TemplateView):
     template_name = 'admin_panel/records_list.html'
 
     def get_context_data(self, model, **kwargs):
-        admin_model = admin.site._registry.get(model, )
+        admin_model = admin.site._registry.get(model)
         if not admin_model:
             raise Http404()
 
@@ -40,31 +40,45 @@ class RecordsListView(SuperuserTestMixin, TemplateView):
 
     def get(self, request, app, model: str, **kwargs):
         try:
-            model = apps.get_model(app, model)
+            model_cls = apps.get_model(app, model)
         except (LookupError, ValueError, TypeError):
             raise Http404
-        context = self.get_context_data(model, **kwargs)
+        context = self.get_context_data(model_cls, **kwargs)
         return self.render_to_response(context)
 
 
 class RecordView(SuperuserTestMixin, TemplateView):
     def get_context_data(self, app, model, pk, **kwargs):
         context = super().get_context_data(**kwargs)
-        model = apps.get_model(app, model)
-        if not model:
+        model_cls = apps.get_model(app, model)
+        if not model_cls:
             raise Http404()
-        context['object'] = model.objects.get(pk=pk)
-        context['meta'] = model._meta
+        context['object'] = model_cls.objects.get(pk=pk)
+        context['meta'] = model_cls._meta
         # что-то с чем-то
         context['form'] = forms_relation.get(
-            model, modelform_factory(model, fields='__all__')
+            model_cls, modelform_factory(model_cls, fields='__all__')
         )(instance=context['object'])
         return context
 
     def get(self, request: HttpRequest, app: str, model: str, pk: int, **kwargs):
+        # нет проверки на существование шаблона
         template_name = f'admin_panel/{model}.html'
         context = self.get_context_data(app, model, pk, **kwargs)
         return render(request, template_name, context)
 
     def post(self, request, app, model, pk, **kwargs):
-        return HttpResponse('KURWA')
+        model_cls = apps.get_model(app, model)
+        obj = model_cls.objects.get(pk=pk)
+        form = forms_relation.get(
+            model_cls, modelform_factory(model_cls, fields='__all__')
+        )
+        form = form(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect('..')
+
+        template_name = f'admin_panel/{model}.html'
+        context = self.get_context_data(app, model, pk, **kwargs)
+        context['form'] = form
+        return render(request, template_name, context)

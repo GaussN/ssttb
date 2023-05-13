@@ -13,8 +13,18 @@
 	<a href="../" style="text-decoration: underline;">{{ meta.verbose_name_plural }}</a> >
 	<b>{{ object.topic }}</b>
 </div>
-	{% include 'app/error_message.html' %}
+	{% include 'app/message.html' %}
 	<div>
+		<div>
+             {% for ner in form.non_field_errors %}
+                <span class="form-error-message">{{ ner }}</span>
+             {% endfor %}
+			{% for f in form %}
+				{% for er in f.errors %}
+					<span class="form-error-message">{{ er }}</span><br>
+				{% endfor %}
+			{% endfor %}
+         </div>
 		<form action="" method="post">
 			{% csrf_token %}
 			<label>Заголовок теста:</label>
