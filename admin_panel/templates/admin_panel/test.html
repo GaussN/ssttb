@@ -30,7 +30,7 @@
 			<label>Заголовок теста:</label>
 			<input type="text" class="form-control" name="test_title" value="{{ object.topic }}">
 			<label>Отображение:</label>
-			<input type="checkbox" class="form-checkbox" name="test_visible" {% if object.visible %}checked{% endif %}>
+			<input type="checkbox" class="form-checkbox" name="test_visible" {% if not object or object.visible %}checked{% endif %}>
 			<hr/>
 			<div class="questions">
 				{% for question in object.test_json %}

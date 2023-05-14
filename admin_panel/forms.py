@@ -24,17 +24,6 @@ class TestForm(forms.ModelForm):
         model = Test
         fields = ('topic', 'test_json', 'visible')
 
-    def clean_test_json(self):
-        test_json = self.cleaned_data['test_json']
-        for question in test_json:
-            if not question['text']:
-                raise ValidationError('Вопрос не может быть пустым')
-            if not question['answers']:
-                raise ValidationError('Вопрос не может быть без ответов')
-            # if any(i['right'] for i in question['answers']):
-            #     raise ValidationError('Вопрос должен содержать правильный ответ')
-        return test_json
-
 
 class MediaForm(forms.ModelForm):
     class Meta:
@@ -62,8 +51,11 @@ class UserForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        # if User.objects.filter(email=email):
-        #     raise ValidationError('Почта уже используется')
+        emails = User.objects.filter(email=email)
+        if self.instance:
+            emails = emails.exclude(pk=self.instance.pk)
+        if emails.count():
+            raise ValidationError('Почта уже используется')
         return email
 
 

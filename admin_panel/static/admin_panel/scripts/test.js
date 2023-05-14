@@ -93,12 +93,11 @@ $('document').ready(() => {
                 }
             }
             //
-
-            // Мне стыдно зи этот костыль
+            // Мне стыдно зa этот костыль
             let form = $('.hide-block>form');
             let topic = form.find('input[name=topic]'); topic.val(testObj['topic']);
             let test_json = form.find('textarea[name=test_json]'); test_json.val(testObj['test_json']);
-            let visible = form.find('input[name=visible]'); visible.val(testObj['visible']);
+            let visible = form.find('input[name=visible]'); visible.prop('checked', testObj['visible']);
 
             form.submit();
             //

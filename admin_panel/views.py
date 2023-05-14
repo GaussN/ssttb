@@ -1,9 +1,8 @@
 from django.contrib import admin
 from django.forms import modelform_factory
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView
-from django.http import Http404, HttpResponse, HttpRequest
+from django.http import Http404, HttpRequest
 from django.apps import apps
 
 from admin_panel.mixins import SuperuserTestMixin
@@ -55,7 +54,6 @@ class RecordView(SuperuserTestMixin, TemplateView):
             raise Http404()
         context['object'] = model_cls.objects.get(pk=pk)
         context['meta'] = model_cls._meta
-        # что-то с чем-то
         context['form'] = forms_relation.get(
             model_cls, modelform_factory(model_cls, fields='__all__')
         )(instance=context['object'])
@@ -81,5 +79,40 @@ class RecordView(SuperuserTestMixin, TemplateView):
 
         template_name = f'admin_panel/{model}.html'
         context = self.get_context_data(app, model, pk, **kwargs)
+        context['form'] = form
+        return render(request, template_name, context)
+
+
+class AddRecordView(SuperuserTestMixin, TemplateView):
+    def get_context_data(self, app, model, **kwargs):
+        context = super().get_context_data(**kwargs)
+        model_cls = apps.get_model(app, model)
+        if not model_cls:
+            raise Http404()
+        context['meta'] = model_cls._meta
+        context['form'] = forms_relation.get(
+            model_cls, modelform_factory(model_cls, fields='__all__')
+        )()
+        return context
+
+    def get(self, request, app, model, **kwargs):
+        # нет проверки на существование шаблона
+        template_name = f'admin_panel/{model}.html'
+        context = self.get_context_data(app, model, **kwargs)
+        return render(request, template_name, context)
+
+    def post(self, request, app, model, **kwargs):
+        model_cls = apps.get_model(app, model)
+        form_cls = forms_relation.get(
+            model_cls, modelform_factory(model_cls, fields='__all__')
+        )
+
+        form = form_cls(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('records_list', app=app, model=model, permanent=True)
+
+        template_name = f'admin_panel/{model}.html'
+        context = self.get_context_data(app, model, **kwargs)
         context['form'] = form
         return render(request, template_name, context)
