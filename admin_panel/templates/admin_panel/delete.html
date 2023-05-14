@@ -1,0 +1,17 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <div>
+	    <a href="{% url 'admin_home' %}" style="text-decoration: underline;">Админ панель</a> >
+	    <a href="../../" style="text-decoration: underline;">{{ meta.verbose_name_plural }}</a> >
+	    <a href="../" style="text-decoration: underline;">{{ object.topic }}{{ object.header }}{{ object.username }}</a> >
+        <b>удалить</b>
+    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Вы уверены, что хотите удалить запись "{{ object.topic }}{{ object.header }}{{ object.username }}"?</p>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+    </form>
+</div>
+{% endblock %}

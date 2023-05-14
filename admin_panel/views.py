@@ -116,3 +116,25 @@ class AddRecordView(SuperuserTestMixin, TemplateView):
         context = self.get_context_data(app, model, **kwargs)
         context['form'] = form
         return render(request, template_name, context)
+
+
+class DeleteRecordView(SuperuserTestMixin, TemplateView):
+    template_name = 'admin_panel/delete.html'
+    def get_context_data(self, app, model, pk, **kwargs):
+        context = super().get_context_data(**kwargs)
+        model_cls = apps.get_model(app, model)
+        if not model_cls:
+            raise Http404()
+        context['meta'] = model_cls._meta
+        context['object'] = model_cls.objects.get(pk=pk)
+        return context
+
+    # def get(self, app, model, pk, **kwargs):
+    #     model_cls =
+    #     return redirect('records_list', app=app, model=model)
+
+    def post(self, request, app, model, pk, **kwargs):
+        model_cls = apps.get_model(app, model)
+        obj = model_cls.objects.get(pk=pk)
+        obj.delete()
+        return redirect('records_list', app=app, model=model)
