@@ -20,6 +20,9 @@
         </a>
     </div>
 
+    {% if not objects %}
+    <p class="text-center">Записи отсутствуют</p>
+    {% else %}
     <table class="table hover-table table-bordered">
         <thead>
             <tr>
@@ -43,6 +46,7 @@
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 
 </div>
 {% endblock content %}
