@@ -1,9 +1,9 @@
 import json
 
-from django.http import HttpResponseRedirect
 from django.views.generic import ListView, TemplateView
 from django.shortcuts import get_object_or_404, redirect
 
+from main.models import Progress
 from .models import *
 
 

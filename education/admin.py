@@ -17,12 +17,10 @@ class TestAdmin(admin.ModelAdmin):
     ordering = ('id', 'topic', )
 
 
-class ProgressAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'test_id', 'date', 'score')
-    list_filter = ('date', 'user_id', 'test_id')
-    ordering = ('id', 'score', 'date')
+class MediaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'media_type', 'header', 'url')
 
 
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Test, TestAdmin)
-admin.site.register(Progress, ProgressAdmin)
+admin.site.register(Media, MediaAdmin)

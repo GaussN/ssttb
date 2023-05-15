@@ -7,9 +7,9 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 
-from education.models import Progress, Test
 from .forms import RegisterUserForm, LoginUserForm
 from utils.search import SearchUtil
+from education.models import Media
 from .models import *
 
 

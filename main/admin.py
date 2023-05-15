@@ -4,10 +4,12 @@ from django.contrib.auth.admin import UserAdmin
 from main.models import *
 
 
-class MediaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'media_type', 'header', 'url')
+class ProgressAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user_id', 'test_id', 'date', 'score')
+    list_filter = ('date', 'user_id', 'test_id')
+    ordering = ('id', 'score', 'date')
 
 
-admin.site.register(Media, MediaAdmin)
+admin.site.register(Progress, ProgressAdmin)
 
 UserAdmin.list_display = ('username', 'first_name', 'last_name', 'email', 'is_superuser')

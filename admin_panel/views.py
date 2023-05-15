@@ -1,8 +1,8 @@
-from django.contrib import admin
-from django.forms import modelform_factory
-from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
 from django.http import Http404, HttpRequest
+from django.forms import modelform_factory
+from django.contrib import admin
 from django.apps import apps
 
 from admin_panel.mixins import SuperuserTestMixin

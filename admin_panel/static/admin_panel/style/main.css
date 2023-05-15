@@ -51,3 +51,7 @@ thead{
 .form-error-message{
     color: #FF6060;
 }
+
+textarea{
+    resize: vertical;
+}
