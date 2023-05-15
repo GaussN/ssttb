@@ -40,9 +40,10 @@ class MediaForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'is_superuser')
+        fields = ('username', 'password', 'first_name', 'last_name', 'email', 'is_superuser')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
@@ -57,6 +58,13 @@ class UserForm(forms.ModelForm):
         if emails.count():
             raise ValidationError('Почта уже используется')
         return email
+
+    def save(self, commit=True):
+        user = super().save(commit)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
 
 
 forms_relation = {
