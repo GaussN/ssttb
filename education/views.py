@@ -1,6 +1,6 @@
 import json
 
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
 from django.shortcuts import get_object_or_404, redirect
 
 from main.models import Progress
@@ -87,3 +87,24 @@ class TestView(TemplateView):
         new_progress = Progress(user=request.user, test=test, score=score, user_answers=user_answers)
         new_progress.save()
         return redirect('result_page', pk=new_progress.pk)
+
+
+class MediaListView(TemplateView):
+    template_name = 'education/media_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['media'] = Media.objects.filter(media_type=self.request.GET.get('media', 'VIDEO'))
+        context['active_page'] = 'p_media'
+        return context
+
+
+class MediaView(DetailView):
+    template_name = 'education/media.html'
+    model = Media
+    context_object_name = 'media'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_page'] = 'p_media'
+        return context

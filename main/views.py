@@ -1,7 +1,7 @@
 from math import ceil
 
 from django.http import HttpResponse
-from django.views.generic import TemplateView, CreateView, DetailView
+from django.views.generic import TemplateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
@@ -9,7 +9,6 @@ from django.shortcuts import redirect
 
 from .forms import RegisterUserForm, LoginUserForm
 from utils.search import SearchUtil
-from education.models import Media
 from .models import *
 
 
@@ -20,37 +19,15 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['active_page'] = 'home'
         if self.request.user.is_superuser:
-           return context
+            return context
 
         context['progress_percent'] = 0
         if Test.objects.count():
             context['progress_percent'] = \
                 ceil(
-                    Progress.objects.filter(user_id=8).values('test_id').distinct().count()
-                    / Test.objects.count()
-                    * 100
+                    Progress.objects.filter(user_id=self.request.user.pk).values('test_id').distinct().count()
+                    / Test.objects.count() * 100
                 )
-        return context
-
-
-class MediaListView(TemplateView):
-    template_name = 'main/media_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['media'] = Media.objects.filter(media_type=self.request.GET.get('media', 'VIDEO'))
-        context['active_page'] = 'p_media'
-        return context
-
-
-class MediaView(DetailView):
-    template_name = 'main/media.html'
-    model = Media
-    context_object_name = 'media'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['active_page'] = 'p_media'
         return context
 
 
@@ -119,7 +96,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         # context['progress'] = Progress.objects.filter(user=self.request.user.pk)
         context['progress'] = Progress.objects.raw(
-            "SELECT *, MAX(date) FROM education_progress GROUP BY test_id ORDER BY date ASC"
+            "SELECT *, MAX(date) FROM main_progress GROUP BY test_id ORDER BY date ASC"
         )
         context['active_page'] = 'user_panel'
         return context

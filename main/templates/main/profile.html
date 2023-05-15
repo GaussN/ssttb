@@ -13,6 +13,9 @@
     <h1>Привет {{ request.user.username }}!</h1>
     <p>Тут ты можешь увидеть последние результаты прохождения тестов</p>
     <div class="progress-in-tests">
+        {% if not progress %}
+        <p>Результаты отсутствуют</p>
+        {% else %}
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
@@ -29,6 +32,7 @@
             </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
 
 </div>
