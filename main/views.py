@@ -22,11 +22,11 @@ class HomeView(TemplateView):
             return context
 
         context['progress_percent'] = 0
-        if Test.objects.count():
+        if test_count := Test.objects.filter(visible=True).count():
             context['progress_percent'] = \
                 ceil(
-                    Progress.objects.filter(user_id=self.request.user.pk).values('test_id').distinct().count()
-                    / Test.objects.count() * 100
+                    Progress.objects.filter(user_id=self.request.user.pk, test__visible=True).values('test_id').distinct().count()
+                    / test_count * 100
                 )
         return context
 
@@ -94,9 +94,10 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['progress'] = Progress.objects.filter(user=self.request.user.pk)
         context['progress'] = Progress.objects.raw(
-            "SELECT *, MAX(date) FROM main_progress GROUP BY test_id ORDER BY date ASC"
+            "SELECT p.*, MAX(date) FROM main_progress p JOIN education_test ON education_test.id = test_id WHERE "
+            "user_id = %s and visible=TRUE GROUP BY test_id",
+            (self.request.user.pk,)
         )
         context['active_page'] = 'user_panel'
         return context
