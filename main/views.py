@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from .forms import RegisterUserForm, LoginUserForm
 from utils.search import SearchUtil
@@ -133,3 +133,7 @@ class TestResultView(LoginRequiredMixin, TemplateView):
             <img src="https://static.rustore.ru/apk/1366735807/content/ICON/6a0cf744-3639-4b38-be33-0359289f252c.png">
             ''')
         return self.render_to_response(self.get_context_data(**kwargs))
+
+
+def view404(request, exception):
+    return render(request, 'app/404.html', status=404)
