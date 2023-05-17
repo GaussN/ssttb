@@ -1,3 +1,5 @@
+import random
+
 from bulk_update.helper import bulk_update
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -37,6 +39,16 @@ class TestForm(forms.ModelForm):
     class Meta:
         model = Test
         fields = ('topic', 'test_json', 'visible')
+
+    def clean_topic(self):
+        topic = self.cleaned_data['topic']
+        if self.instance and self.instance.topic == topic:
+            return topic
+
+        topics = Test.objects.filter(topic=topic)
+        if not topics.count():
+            return topic
+        return f"{topic}(W:Такая тема теста уже существует)" + chr(random.randint(97, 122))
 
 
 class MediaForm(forms.ModelForm):
