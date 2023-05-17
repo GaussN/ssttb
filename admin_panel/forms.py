@@ -1,6 +1,7 @@
 import random
 
 from bulk_update.helper import bulk_update
+from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django import forms
@@ -85,12 +86,18 @@ class UserForm(forms.ModelForm):
             raise ValidationError('Почта уже используется')
         return email
 
-    def save(self, commit=True):
-        user = super().save(commit)
-        user.set_password(self.cleaned_data['password'])
-        if commit:
-            user.save()
-        return user
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if self.instance and self.instance.password != password:
+            password = make_password(password)
+        return password
+
+    # def save(self, commit=True):
+    #     user = super().save(commit)
+    #     user.set_password(self.cleaned_data['password'])
+    #     if commit:
+    #         user.save()
+    #     return user
 
 
 forms_relation = {
