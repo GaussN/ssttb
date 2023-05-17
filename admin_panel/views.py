@@ -33,7 +33,7 @@ class RecordsListView(SuperuserTestMixin, TemplateView):
 
         context = super().get_context_data(**kwargs)
         context['list_display'] = admin_model.list_display
-        context['objects'] = model.objects.all()
+        context['objects'] = model.objects.all().order_by(*(admin_model.ordering or ()))
         context['meta'] = model._meta
         return context
 
