@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpRequest
@@ -120,6 +121,7 @@ class AddRecordView(SuperuserTestMixin, TemplateView):
 
 class DeleteRecordView(SuperuserTestMixin, TemplateView):
     template_name = 'admin_panel/delete.html'
+
     def get_context_data(self, app, model, pk, **kwargs):
         context = super().get_context_data(**kwargs)
         model_cls = apps.get_model(app, model)
@@ -129,9 +131,13 @@ class DeleteRecordView(SuperuserTestMixin, TemplateView):
         context['object'] = model_cls.objects.get(pk=pk)
         return context
 
-    # def get(self, app, model, pk, **kwargs):
-    #     model_cls =
-    #     return redirect('records_list', app=app, model=model)
+    def get(self, request, app, model, pk, **kwargs):
+        model_cls = apps.get_model(app, model)
+        try:
+            odj = model_cls.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return redirect('records_list', app=app, model=model)
+        return self.render_to_response(self.get_context_data(app, model, pk, **kwargs))
 
     def post(self, request, app, model, pk, **kwargs):
         model_cls = apps.get_model(app, model)
