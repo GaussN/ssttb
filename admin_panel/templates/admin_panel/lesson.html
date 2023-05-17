@@ -12,6 +12,9 @@
 	<a href="../" style="text-decoration: underline;">{{ meta.verbose_name_plural }}</a> >
 	<b>{{ object.topic }}</b>
 </div>
+	{% if object %}
+	{% include 'admin_panel/view_on_site.html' %}
+	{% endif %}
 	{% include 'app/message.html' %}
   	<div>
 		<div>

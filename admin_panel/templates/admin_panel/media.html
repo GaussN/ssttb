@@ -12,7 +12,10 @@
 	<a href="../" style="text-decoration: underline;">{{ meta.verbose_name_plural }}</a> >
 	<b>{{ object.header }}</b>
 </div>
-  {% include 'app/message.html' %}
+	{% if object %}
+	{% include 'admin_panel/view_on_site.html' %}
+	{% endif %}
+  	{% include 'app/message.html' %}
   	<div>
 		<div>
              {% for ner in form.non_field_errors %}

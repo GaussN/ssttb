@@ -1,5 +1,6 @@
 $('document').ready(() => {
 	let answer_template = '<div class="answer form-group form-inline" > '+
+	    '<span class="form-error-message"></span><br>'+
 		'<label class="control-label">Ответ:</label>'+
 		'<input style="width: 100%" type="text" class="form-control" name="answer_text">'+
 		'<label>Правильный:</label>'+
@@ -8,6 +9,7 @@ $('document').ready(() => {
 	'</div>';
 	let question_template = '<div class="panel question">'+
 		'<div class="form-group">'+
+		    '<span class="form-error-message"></span><br>'+
 			'<label>Вопрос:</label>'+
 			'<input type="text" class="form-control" name="question_text">'+
 			'<label>Несколько ответов:</label>'+
@@ -62,37 +64,47 @@ $('document').ready(() => {
 			}
 			testObj["test_json"] = JSON.stringify(testObj["test_json"])
 
-            // проверка вопросов ответов
-            // я не смог сделать это на сервере
-            // (за это мне тоже стыдно)
-            let err = $('span.form-error-message')
+            $('span.form-error-message').text("");
+            if (!$("input[name=test_title]").val()){
+                $('span.form-error-message').text("Тест дожен иметь название");
+                return;
+            }
+            if (!$("div.question").length){
+                $('span.form-error-message').text("Тест должен содержать вопросы");
+                return;
+            }
+
             for (let question of $("div.question")){
-                if ($(question).find("input[type=text]").val() == ""){
-                    alert("Вопрос должен содержать текст");
-                    //err.text("gena");
+                let question_error = $(question).find('.form-group span.form-error-message:first');
+                question_error.text("");
+                console.log(question_error);
+                if (!$(question).find("input[type=text]").val()){
+                    question_error.text("Вопрос должен содержать текст");
                     return;
                 }
-                if ($(question).find(".answers>.answer").length==0){
-                    alert("Вопрос должен иметь ответы");
+                if (!$(question).find(".answers>.answer").length){
+                    question_error.text("Вопрос должен иметь ответы");
                     return;
                 }
+
                 let have_right = false;
-                for (let answer of $(question).find(".answers>.answer")){
-                    if($(answer).find('input[type=text]').val()==""){
-                        alert("Ответы не должны быть пустыми");
+                for (let answer of $(question).find(".answers > .answer")){
+                    let answer_error = $(answer).find('span.form-error-message');
+
+                    if(!$(answer).find('input[type=text]').val()){
+                        answer_error.text("Ответ должен содержать текст");
                         return;
                     }
                     if($(answer).find('input[type=checkbox]').prop("checked")){
                         have_right = true;
-                        break;
                     }
                 }
                 if (!have_right){
-                    alert('Вопрос должен содержать правильные ответы');
+                    console.log(question_error);
+                    question_error.text("Вопрос должен содержать правильные ответы");
                     return;
                 }
             }
-            //
             // Мне стыдно зa этот костыль
             let form = $('.hide-block>form');
             let topic = form.find('input[name=topic]'); topic.val(testObj['topic']);

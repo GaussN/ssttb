@@ -13,6 +13,9 @@
 	<a href="../" style="text-decoration: underline;">{{ meta.verbose_name_plural }}</a> >
 	<b>{{ object.topic }}</b>
 </div>
+	{% if object %}
+	{% include 'admin_panel/view_on_site.html' %}
+	{% endif %}
 	{% include 'app/message.html' %}
 	<div>
 		<div>
@@ -36,6 +39,7 @@
 				{% for question in object.test_json %}
                 <div class="panel question">
 					<div class="form-group">
+						<span class="form-error-message"></span><br>
 						<label>Вопрос:</label>
 						<input type="text" class="form-control" name="question_text" value="{{ question.text }}">
 						<label>Несколько ответов:</label>
@@ -45,6 +49,7 @@
 					<div class="answers">
 						{% for answer in question.answers %}
                         <div class="answer form-group form-inline" >
+							<span class="form-error-message"></span><br>
 							<label class="control-label">Ответ:</label>
 							<input style="width: 100%;" type="text" class="form-control" name="answer_text" value="{{ answer.answer }}">
 							<label>Правильный:</label>
