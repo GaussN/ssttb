@@ -1,3 +1,4 @@
+from bulk_update.helper import bulk_update
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django import forms
@@ -15,6 +16,22 @@ class LessonForm(forms.ModelForm):
             'page': forms.Textarea(attrs={'class': 'form-control'}),
             'visible': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
         }
+
+    def clean_num(self):
+        """
+        Исключает повторы порядкового номера
+        """
+        num = self.cleaned_data['num']
+        # if not Lesson.objects.filter(num=num).count():
+        #     return num
+        if self.instance and self.instance.num == num:
+            return num
+        lessons = Lesson.objects.filter(num__gte=num)
+        for i, l in enumerate(lessons):
+            print(f"{l}:{l.num}/////{i+num+1}")
+            l.num = i + num + 1
+        bulk_update(lessons, update_fields=['num'])
+        return num
 
 
 class TestForm(forms.ModelForm):
