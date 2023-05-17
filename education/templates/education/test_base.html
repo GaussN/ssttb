@@ -3,7 +3,9 @@
 {% block style %}
             <style>
                 label{
-                    margin: 10pt;
+                   margin: 10px;
+
+                    word-break: break-all;
                 }
             </style>
 {% endblock %}
@@ -59,7 +61,8 @@
         for(let answer of answers){
             let label = document.querySelector(`label[for="${answer.id}"]`);
             label.parentNode.classList.remove("bg-danger");
-            label.parentNode.style="";
+            label.parentNode.classList.remove("bg-success");
+            label.classList.remove("text-success");
             if (answer.checked) {
                 if (answer.classList.contains('right-answer'))
                     label.parentNode.className = "bg-success";
@@ -67,8 +70,7 @@
                     label.parentNode.className = "bg-danger";
             }
             else if (answer.classList.contains('right-answer')) {
-                label.parentNode.className = "bg-success";
-                label.parentNode.style = "height: 100%; background: repeating-linear-gradient(-60deg, #dff0d8 0, #dff0d8 3px, transparent 1px, transparent 8px);";
+                label.className = "text-success";
             }
         }
 
