@@ -28,7 +28,6 @@ class LessonForm(forms.ModelForm):
             return num
         lessons = Lesson.objects.filter(num__gte=num)
         for i, l in enumerate(lessons):
-            print(f"{l}:{l.num}/////{i+num+1}")
             l.num = i + num + 1
         bulk_update(lessons, update_fields=['num'])
         return num
