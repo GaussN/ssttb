@@ -92,13 +92,6 @@ class UserForm(forms.ModelForm):
             password = make_password(password)
         return password
 
-    # def save(self, commit=True):
-    #     user = super().save(commit)
-    #     user.set_password(self.cleaned_data['password'])
-    #     if commit:
-    #         user.save()
-    #     return user
-
 
 forms_relation = {
     Lesson: LessonForm,
