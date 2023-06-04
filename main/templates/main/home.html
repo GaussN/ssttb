@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="jumbotron text-center">
-    <h2><b>Физика твердых тел</b></h2>
+    <h2><b>Физика твердого тела</b></h2>
     <p>Учебное пособие</p>
 </div>
 {% include 'app/search-line.html' %}
@@ -10,8 +10,8 @@
     <div class="col-md-4">
         <a class="link" href="{% url 'lessons_list_page' %}">
             <div class="panel spanel">
-                <h4 class="panel-heading"><b>Учебный материал</b></h4>
-                <div class="panel-body">Lorem ipsum dolor sit amet.</div>
+                <h4 class="panel-heading"><b>Лекции</b></h4>
+                <div class="panel-body">Теоретический материал</div>
             </div>
         </a>
     </div>
@@ -19,7 +19,7 @@
         <a href="{% url 'tests_list_page' %}">
             <div class="panel spanel">
                 <h4 class="panel-heading"><b>Тесты</b></h4>
-                <div class="panel-body">Lorem ipsum dolor sit amet.</div>
+                <div class="panel-body">Тесты по теоретическому материалу</div>
             </div>
         </a>
     </div>
@@ -27,7 +27,7 @@
         <a href="{% url 'all_media_page' %}?media=VIDEO">
             <div class="panel spanel">
                 <h4 class="panel-heading"><b>Медиа ресурсы</b></h4>
-                <div class="panel-body">Lorem ipsum dolor sit amet.</div>
+                <div class="panel-body">Видео и презентации по теме</div>
             </div>
         </a>
     </div>
