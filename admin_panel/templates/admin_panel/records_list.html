@@ -29,7 +29,7 @@
                 {% for field in list_display %}
                     <th>{% get_attr_verbose_name_from_meta meta field %}</th>
                 {% endfor %}
-                <th>Delete</th>
+                <th>Удалить</th>
             </tr>
         </thead>
         <tbody>
@@ -37,10 +37,16 @@
                 <tr>
                     {% for field in list_display %}
                         {% get_attr object field as f %}
-                        <td><a  href="{{ object.pk }}" class="table-link">{{ f|truncatechars:50 }}</a></td>
-                    {% endfor %}
+			{% is_bool f as b_f_r  %}
+			{% if b_f_r %}
+			<td><a href="{{ object.pk }}" class="table-link">{% if f %}+{% else %}-{% endif %}</a></td>
+			{% else %}
+			<td><a  href="{{ object.pk }}" class="table-link">{{ f|truncatechars:50 }}</a></td>
+			{% endif %}
+
+		    {% endfor %}
                     <td>
-                        <a href="{{ object.pk }}/delete" class="table-link text-danger">Delete</a>
+                        <a href="{{ object.pk }}/delete" class="table-link text-danger">Удалить</a>
                     </td>
                 </tr>
             {% endfor %}
